@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- * PopulateDatabase.xml * * Copyright (C) 2017 Universidad de Sevilla 
+	* * The use of this project is hereby constrained to the conditions of the 
+	* TDG Licence, a copy of which you may download from * http://www.tdg-seville.info/License.html -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	">
+
+	<!-- User accounts -->
+
+	<bean id="userAccount1" class="security.UserAccount">
+		<property name="username" value="admin" />
+		<property name="password" value="21232f297a57a5a743894a0e4a801fc3" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="ADMIN" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="userAccount2" class="security.UserAccount">
+		<property name="username" value="customer1" />
+		<property name="password" value="ffbc4675f864e0e9aab8bdf7a0437010" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="CUSTOMER" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="userAccount3" class="security.UserAccount">
+		<property name="username" value="customer2" />
+		<property name="password" value="5ce4d191fd14ac85a1469fb8c29b7a7b" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="CUSTOMER" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="userAccount4" class="security.UserAccount">
+		<property name="username" value="user1" />
+		<property name="password" value="24c9e15e52afc47c225b757e7bee1f9d" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="USER" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="userAccount5" class="security.UserAccount">
+		<property name="username" value="user2" />
+		<property name="password" value="7e58d63b60197ceb55a1c487989a3720" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="USER" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<!-- Other domain beans come here -->
+
+	<!-- Administrator beans -->
+
+	<bean id="admin1" class="domain.Administrator">
+		<property name="name" value="Carlos" />
+		<property name="surname" value="Estébanez" />
+		<property name="email" value="cestebanez@mail.com" />
+		<property name="phone" value="8174328763" />
+		<property name="address" value="c/ Misterio 12, 45066 Madrid" />
+		<property name="userAccount" ref="userAccount1" />
+	</bean>
+
+	<!-- Customer beans -->
+
+	<bean id="customer1" class="domain.Customer">
+		<property name="name" value="María" />
+		<property name="surname" value="Carcaño" />
+		<property name="email" value="maria_12@mail.com" />
+		<property name="phone" value="+34922832727" />
+		<property name="address" value="Pza. España 29, Bilbao" />
+		<property name="userAccount" ref="userAccount2" />
+		<property name="creditCards">
+			<list>
+				<ref bean="creditCard1" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="customer2" class="domain.Customer">
+		<property name="name" value="John" />
+		<property name="surname" value="White" />
+		<property name="email" value="white-at@mail.com" />
+		<property name="phone" value="543254357" />
+		<property name="address" value="Cambridge St. 114, Brighton, UK" />
+		<property name="userAccount" ref="userAccount3" />
+		<property name="creditCards">
+			<list>
+				<ref bean="creditCard2" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- User beans -->
+
+	<bean id="user1" class="domain.User">
+		<property name="name" value="Gregorio" />
+		<property name="surname" value="Torant" />
+		<property name="email" value="grego998@mail.com" />
+		<property name="phone" value="+3362476543" />
+		<property name="address" value="Ascensión 35, Huelva" />
+		<property name="userAccount" ref="userAccount4" />
+		<property name="followers">
+			<list>
+				<ref bean="user2" />
+			</list>
+		</property>
+		<property name="chirps">
+			<list>
+				<ref bean="chirp1" />
+				<ref bean="chirp2" />
+			</list>
+		</property>
+		<property name="newspapers">
+			<list>
+				<ref bean="newspaper1" />
+			</list>
+		</property>
+		<property name="articles">
+			<list>
+				<ref bean="article3" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="user2" class="domain.User">
+		<property name="name" value="Meghan" />
+		<property name="surname" value="Rochester" />
+		<property name="email" value="meg_roc@mail.com" />
+		<property name="phone" value="6243882" />
+		<property name="address" value="Thames 24, Salisbury" />
+		<property name="userAccount" ref="userAccount5" />
+		<property name="followers">
+			<list>
+			</list>
+		</property>
+		<property name="chirps">
+			<list>
+				<ref bean="chirp3" />
+			</list>
+		</property>
+		<property name="newspapers">
+			<list>
+				<ref bean="newspaper2" />
+				<ref bean="newspaper3" />
+			</list>
+		</property>
+		<property name="articles">
+			<list>
+				<ref bean="article1" />
+				<ref bean="article2" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- CreditCard beans -->
+
+	<bean id="creditCard1" class="domain.CreditCard">
+		<property name="holder" value="María Carcaño Fuentes" />
+		<property name="brand" value="MasterCard" />
+		<property name="number" value="5564157826282522" />
+		<property name="expMonth" value="10" />
+		<property name="expYear" value="2020" />
+		<property name="cvv" value="150" />
+	</bean>
+
+	<bean id="creditCard2" class="domain.CreditCard">
+		<property name="holder" value="John Roger White" />
+		<property name="brand" value="VISA" />
+		<property name="number" value="4716665991180313" />
+		<property name="expMonth" value="12" />
+		<property name="expYear" value="2019" />
+		<property name="cvv" value="220" />
+	</bean>
+
+	<!-- Chirp beans -->
+
+	<bean id="chirp1" class="domain.Chirp">
+		<property name="moment" value="17/10/2012 00:00" />
+		<property name="title" value="Hello!" />
+		<property name="description" value="This is my first chirp!" />
+	</bean>
+
+	<bean id="chirp2" class="domain.Chirp">
+		<property name="moment" value="18/10/2012 12:24" />
+		<property name="title" value="Today..." />
+		<property name="description" value="I'm going to publish a newspaper" />
+	</bean>
+
+	<bean id="chirp3" class="domain.Chirp">
+		<property name="moment" value="01/01/2012 01:36" />
+		<property name="title" value="Happy new year" />
+		<property name="description"
+			value="Happy holidays to the users of Acme Newspaper." />
+	</bean>
+
+	<!-- Newspaper beans -->
+
+	<bean id="newspaper1" class="domain.Newspaper">
+		<property name="title" value="The daily paper" />
+		<property name="publicationDate" value="06/21/2017 00:00" />
+		<property name="description" value="A daily paper for all your news needs." />
+		<property name="picture" value="" />
+		<property name="isPrivate" value="false" />
+		<property name="publisher" ref="user1" />
+		<property name="customers">
+			<list>
+			</list>
+		</property>
+		<property name="articles">
+			<list>
+				<ref bean="article3" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="newspaper2" class="domain.Newspaper">
+		<property name="title" value="Special news" />
+		<property name="publicationDate" value="08/30/2017 11:10" />
+		<property name="description" value="A special broadcast." />
+		<property name="picture" value="" />
+		<property name="isPrivate" value="true" />
+		<property name="publisher" ref="user2" />
+		<property name="customers">
+			<list>
+				<ref bean="customer1" />
+				<ref bean="customer2" />
+			</list>
+		</property>
+		<property name="articles">
+			<list>
+				<ref bean="article1" />
+				<ref bean="article2" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="newspaper3" class="domain.Newspaper">
+		<property name="title" value="Experiment dot com" />
+		<property name="publicationDate" value="10/24/2020 15:30" />
+		<property name="description" value="An experimental newspaper." />
+		<property name="picture" value="" />
+		<property name="isPrivate" value="true" />
+		<property name="publisher" ref="user2" />
+		<property name="customers">
+			<list>
+
+			</list>
+		</property>
+		<property name="articles">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<!-- Article beans -->
+
+	<bean id="article1" class="domain.Article">
+		<property name="title" value="Lorem ipsum" />
+		<property name="moment" value="08/30/2017 15:00" />
+		<property name="summary" value="Fusce ultrices, justo eget" />
+		<property name="body"
+			value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ultrices, justo eget porttitor consequat, enim magna ornare libero, ac lacinia lectus tortor dapibus dolor. Nam laoreet porta dignissim. Pellentesque tincidunt, lorem et consequat semper." />
+		<property name="pictures">
+			<list>
+
+			</list>
+		</property>
+		<property name="finalMode" value="true" />
+		<property name="writer" ref="user2" />
+		<property name="followups">
+			<list>
+				<ref bean="followup1" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="article2" class="domain.Article">
+		<property name="title" value="New year" />
+		<property name="moment" value="09/15/2017 05:05" />
+		<property name="summary" value="This is the second article" />
+		<property name="body"
+			value="In the Gregorian calendar, the most widely used calendar system today, New Year occurs on January 1 (New Year's Day). This was also the case both in the Roman calendar (at least after about 713 BC) and in the Julian calendar that succeeded it." />
+		<property name="pictures">
+			<list>
+			</list>
+		</property>
+		<property name="finalMode" value="true" />
+		<property name="writer" ref="user2" />
+		<property name="followups">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="article3" class="domain.Article">
+		<property name="title" value="Go to play" />
+		<property name="moment" value="04/12/2020 10:10" />
+		<property name="summary"
+			value="We go to play for 2 days in my house the next week" />
+		<property name="body"
+			value="This news is from Thailand. Thai police seize drugs. In one week, they seize 1.35 tonnes of drugs. The drugs are worth 32 million dollars. Police arrest 11 people. People traffick these drugs from northern Thailand to Malaysia. " />
+		<property name="pictures">
+			<list>
+
+			</list>
+		</property>
+		<property name="finalMode" value="false" />
+		<property name="writer" ref="user1" />
+		<property name="followups">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<!-- Followup beans -->
+
+	<bean id="followup1" class="domain.Followup">
+		<property name="title" value="A followup" />
+		<property name="moment" value="10/09/2017 00:00" />
+		<property name="summary" value="A followup to our latest piece" />
+		<property name="text"
+			value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ultrices, justo eget porttitor consequat, enim magna ornare libero." />
+		<property name="pictures">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<!-- TabooWord beans -->
+
+	<bean id="tabooWord1" class="domain.TabooWord">
+		<property name="word" value="sex" />
+	</bean>
+
+	<bean id="tabooWord2" class="domain.TabooWord">
+		<property name="word" value="sexo" />
+	</bean>
+
+	<bean id="tabooWord3" class="domain.TabooWord">
+		<property name="word" value="viagra" />
+	</bean>
+
+	<bean id="tabooWord4" class="domain.TabooWord">
+		<property name="word" value="cialis" />
+	</bean>
+
+</beans>
