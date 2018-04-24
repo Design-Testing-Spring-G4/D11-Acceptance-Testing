@@ -14,6 +14,7 @@ import security.LoginService;
 import security.UserAccount;
 import security.UserAccountRepository;
 import domain.Actor;
+import domain.TabooWord;
 
 @Service
 @Transactional
@@ -26,6 +27,11 @@ public class ActorService {
 
 	@Autowired
 	private UserAccountRepository	userAccountRepository;
+
+	//Supporting services
+
+	@Autowired
+	private TabooWordService		tabooWordService;
 
 
 	//Simple CRUD Methods --------------------------------
@@ -73,5 +79,16 @@ public class ActorService {
 		old.setPassword(hash);
 		final UserAccount newOne = this.userAccountRepository.save(old);
 		a.setUserAccount(newOne);
+	}
+
+	public boolean isSpam(final String s) {
+		final Collection<TabooWord> words = this.tabooWordService.findAll();
+		boolean isSpam = false;
+
+		for (final TabooWord e : words)
+			if (s.contains(e.getWord()))
+				isSpam = true;
+
+		return isSpam;
 	}
 }

@@ -31,17 +31,18 @@ public class Newspaper extends DomainEntity {
 
 	//Attributes
 
-	private String					title;
-	private Date					publicationDate;
-	private String					description;
-	private String					picture;
-	private boolean					isPrivate;
+	private String						title;
+	private Date						publicationDate;
+	private String						description;
+	private String						picture;
+	private boolean						isPrivate;
 
 	//Relationships
 
-	private User					publisher;
-	private Collection<Customer>	customers;
-	private Collection<Article>		articles;
+	private User						publisher;
+	private Collection<Customer>		customers;
+	private Collection<Article>			articles;
+	private Collection<Advertisement>	advertisements;
 
 
 	//Getters
@@ -94,6 +95,13 @@ public class Newspaper extends DomainEntity {
 		return this.articles;
 	}
 
+	@NotNull
+	@Valid
+	@OneToMany(mappedBy = "newspaper")
+	public Collection<Advertisement> getAdvertisements() {
+		return this.advertisements;
+	}
+
 	//Setters
 
 	public void setTitle(final String title) {
@@ -130,5 +138,9 @@ public class Newspaper extends DomainEntity {
 
 	public void setArticles(final Collection<Article> articles) {
 		this.articles = articles;
+	}
+
+	public void setAdvertisements(final Collection<Advertisement> advertisements) {
+		this.advertisements = advertisements;
 	}
 }

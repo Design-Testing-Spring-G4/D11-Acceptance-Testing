@@ -131,4 +131,7 @@ public class NewspaperService {
 		return this.newspaperRepository.newspapersWhoContainsArticle(id);
 	}
 
+	public Double ratioNewspapersWithAd() {
+		return this.newspaperRepository.ratioNewspapersWithAd();
+	}
 }

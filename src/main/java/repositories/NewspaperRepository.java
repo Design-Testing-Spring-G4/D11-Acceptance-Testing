@@ -37,6 +37,10 @@ public interface NewspaperRepository extends JpaRepository<Newspaper, Integer> {
 	@Query("select avg(n.articles.size) from Newspaper n where n.isPrivate = false")
 	Double avgArticlesPerPublicNewspaper();
 
+	//The ratio of newspapers that have at least one advertisement versus the newspapers that haven't any.
+	@Query("select (select count(n) from Newspaper n where n.advertisements is not empty)*1.0/count(n) from Newspaper n where n.advertisements is empty")
+	Double ratioNewspapersWithAd();
+
 	@Query("select n from Newspaper n join n.articles a where a.finalMode = true and n.publicationDate <= ?1")
 	Collection<Newspaper> newspapersForToPublish(Date date);
 

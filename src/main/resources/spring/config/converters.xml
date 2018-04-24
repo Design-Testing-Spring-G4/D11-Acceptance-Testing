@@ -57,6 +57,21 @@
 		
 		<bean class="converters.UserToStringConverter"/>
 		<bean class="converters.StringToUserConverter"/>
+		
+		<bean class="converters.AgentToStringConverter"/>
+		<bean class="converters.StringToAgentConverter"/>
+		
+		<bean class="converters.AdvertisementToStringConverter"/>
+		<bean class="converters.StringToAdvertisementConverter"/>
+		
+		<bean class="converters.FolderToStringConverter"/>
+		<bean class="converters.StringToFolderConverter"/>
+		
+		<bean class="converters.MailMessageToStringConverter"/>
+		<bean class="converters.StringToMailMessageConverter"/>
+		
+		<bean class="converters.VolumeToStringConverter"/>
+		<bean class="converters.StringToVolumeConverter"/>
 	</util:list>
 	
 </beans>
