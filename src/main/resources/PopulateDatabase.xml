@@ -74,7 +74,7 @@
 	
 	<bean id="userAccount6" class="security.UserAccount">
 		<property name="username" value="agent1" />
-		<property name="password" value="7e58d63b60197ceb55a1c487989a3720" />
+		<property name="password" value="83a87fd756ab57199c0bb6d5e11168cb" />
 		<property name="authorities">
 			<list>
 				<bean class="security.Authority">

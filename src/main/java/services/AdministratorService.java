@@ -1,6 +1,7 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -13,6 +14,7 @@ import repositories.AdministratorRepository;
 import security.Authority;
 import security.UserAccount;
 import domain.Administrator;
+import domain.Folder;
 
 @Service
 @Transactional
@@ -28,6 +30,9 @@ public class AdministratorService {
 	@Autowired
 	private ActorService			actorService;
 
+	@Autowired
+	private FolderService			folderService;
+
 
 	//Simple CRUD Methods --------------------------------
 
@@ -39,6 +44,7 @@ public class AdministratorService {
 
 		final Administrator administrator = new Administrator();
 		administrator.setUserAccount(account);
+		administrator.setFolders(new ArrayList<Folder>());
 
 		return administrator;
 	}
@@ -56,13 +62,18 @@ public class AdministratorService {
 	public Administrator save(final Administrator administrator) {
 		Assert.notNull(administrator);
 
+		final Administrator saved2;
 		//Assertion that the user modifying this administrator has the correct privilege.
-		if (administrator.getId() != 0)
+		if (administrator.getId() != 0) {
 			Assert.isTrue(this.actorService.findByPrincipal().getId() == administrator.getId());
+			saved2 = this.administratorRepository.save(administrator);
+		} else {
+			final Administrator saved = this.administratorRepository.save(administrator);
+			saved.setFolders(this.folderService.generateDefaultFolders(saved));
+			saved2 = this.administratorRepository.save(saved);
+		}
 
-		final Administrator saved = this.administratorRepository.save(administrator);
-
-		return saved;
+		return saved2;
 	}
 
 	public void delete(final Administrator administrator) {

@@ -43,6 +43,7 @@
 	<form:hidden path="chirps"/>
 	<form:hidden path="newspapers"/>
 	<form:hidden path="articles"/>
+	<form:hidden path="folders"/>
 	
 	
 	<form:label path="userAccount.username">

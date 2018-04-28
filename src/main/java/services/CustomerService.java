@@ -15,6 +15,7 @@ import security.Authority;
 import security.UserAccount;
 import domain.CreditCard;
 import domain.Customer;
+import domain.Folder;
 
 @Service
 @Transactional
@@ -30,6 +31,9 @@ public class CustomerService {
 	@Autowired
 	private ActorService		actorService;
 
+	@Autowired
+	private FolderService		folderService;
+
 
 	//Simple CRUD Methods --------------------------------
 
@@ -42,6 +46,7 @@ public class CustomerService {
 		final Customer customer = new Customer();
 		customer.setUserAccount(account);
 		customer.setCreditCards(new ArrayList<CreditCard>());
+		customer.setFolders(new ArrayList<Folder>());
 
 		return customer;
 	}
@@ -59,13 +64,18 @@ public class CustomerService {
 	public Customer save(final Customer customer) {
 		Assert.notNull(customer);
 
-		//Assertion that the user modifying this customer has the correct privilege.
-		if (customer.getId() != 0)
+		final Customer saved2;
+		//Assertion that the user modifying this user has the correct privilege.
+		if (customer.getId() != 0) {
 			Assert.isTrue(this.actorService.findByPrincipal().getId() == customer.getId());
+			saved2 = this.customerRepository.save(customer);
+		} else {
+			final Customer saved = this.customerRepository.save(customer);
+			saved.setFolders(this.folderService.generateDefaultFolders(saved));
+			saved2 = this.customerRepository.save(saved);
+		}
 
-		final Customer saved = this.customerRepository.save(customer);
-
-		return saved;
+		return saved2;
 	}
 
 	public void delete(final Customer customer) {

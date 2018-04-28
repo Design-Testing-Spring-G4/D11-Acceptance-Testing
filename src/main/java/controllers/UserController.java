@@ -78,17 +78,15 @@ public class UserController extends AbstractController {
 	public ModelAndView save(@Valid final User user, final BindingResult binding) {
 		ModelAndView result;
 
-		if (binding.hasErrors()) {
+		if (binding.hasErrors())
 			result = this.createEditModelAndView(user);
-			System.out.println(binding.getAllErrors().toString());
-		} else
+		else
 			try {
 				this.actorService.hashPassword(user);
 				this.userService.save(user);
 				result = new ModelAndView("redirect:/welcome/index.do");
 			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(user, "user.commit.error");
-				System.out.println(oops.toString());
 			}
 		return result;
 	}

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ArticleService;
+import services.UserService;
 import domain.Article;
 
 @Controller
@@ -21,6 +22,9 @@ public class ArticleController extends AbstractController {
 
 	@Autowired
 	private ArticleService	articleService;
+
+	@Autowired
+	private UserService		userService;
 
 
 	//Listing
@@ -33,6 +37,20 @@ public class ArticleController extends AbstractController {
 		articles = this.articleService.findAll();
 
 		result = new ModelAndView("newspaper/list");
+		result.addObject("articles", articles);
+		result.addObject("requestURI", "article/list.do");
+
+		return result;
+	}
+
+	@RequestMapping(value = "/listByUser", method = RequestMethod.GET)
+	public ModelAndView list(@RequestParam final int varId) {
+		final ModelAndView result;
+		Collection<Article> articles;
+
+		articles = this.userService.articlesPublishedPerUser(varId);
+
+		result = new ModelAndView("article/list");
 		result.addObject("articles", articles);
 		result.addObject("requestURI", "article/list.do");
 

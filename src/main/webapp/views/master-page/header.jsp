@@ -33,6 +33,8 @@
 					<li class="arrow"></li>
 					<li><a href="user/create.do"><spring:message
 								code="master.page.register.user" /></a></li>
+					<li><a href="agent/create.do"><spring:message
+								code="master.page.register.agent" /></a></li>
 				</ul></li>
 
 		</security:authorize>
@@ -44,7 +46,8 @@
 			</a>
 				<ul>
 					<li class="arrow"></li>
-
+					<li><a href="folder/list.do"><spring:message
+									code="master.page.folder" /></a></li>
 
 					<security:authorize access="hasRole('ADMIN')">
 						<li><a href="administrator/dashboard.do"><spring:message
@@ -52,28 +55,18 @@
 					</security:authorize>
 
 					<security:authorize access="hasRole('USER')">
-
 						<li><a href="newspaper/user/list.do"><spring:message
 									code="master.page.list.newspaperUser" /></a></li>
 						<li><a href="newspaper/listNotPublished.do"><spring:message
 									code="master.page.create.article" /></a></li>
-
 					</security:authorize>
 
-					<security:authorize access="hasRole('CUSTOMER')">
-
+					<security:authorize access="hasRole('AGENT')">
+						<li><a href="advertisement/agent/create.do"><spring:message
+									code="master.page.advertisement" /></a></li>
 					</security:authorize>
 					<li><a href="j_spring_security_logout"><spring:message
 								code="master.page.logout" /> </a></li>
-				</ul></li>
-		</security:authorize>
-
-		<security:authorize access="hasRole('ADMIN')">
-			<li><a class="fNiv"><spring:message
-						code="master.page.administrator" /></a>
-				<ul>
-					<li class="arrow"></li>
-
 				</ul></li>
 		</security:authorize>
 

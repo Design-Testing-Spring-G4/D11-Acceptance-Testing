@@ -12,5 +12,5 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, In
 
 	//The ratio of advertisements that have taboo words.
 	@Query("select ?1*1.0/count(a) from Advertisement a")
-	Double ratioAdsWithTabooWord(Integer count);
+	Double ratioAdsWithTabooWord(Double count);
 }

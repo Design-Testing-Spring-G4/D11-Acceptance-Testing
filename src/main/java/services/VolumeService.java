@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import repositories.VolumeRepository;
+import security.Authority;
 import domain.Customer;
 import domain.Newspaper;
 import domain.User;
@@ -58,6 +59,21 @@ public class VolumeService {
 
 		//Assertion that the user modifying this volume has the correct privilege.
 		Assert.isTrue(this.actorService.findByPrincipal().getId() == volume.getPublisher().getId());
+
+		final Volume saved = this.volumeRepository.save(volume);
+
+		return saved;
+	}
+
+	public Volume saveSubscribe(final Volume volume) {
+		Assert.notNull(volume);
+
+		//Assertion that the user modifying this volume is a subscribing customer.
+		Assert.isTrue(this.actorService.findByPrincipal().getUserAccount().getAuthorities().contains(Authority.CUSTOMER));
+
+		final Collection<Customer> subscriptions = volume.getSubscriptions();
+		subscriptions.add((Customer) this.actorService.findByPrincipal());
+		volume.setSubscriptions(subscriptions);
 
 		final Volume saved = this.volumeRepository.save(volume);
 

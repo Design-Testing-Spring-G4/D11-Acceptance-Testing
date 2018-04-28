@@ -15,6 +15,7 @@ import security.Authority;
 import security.UserAccount;
 import domain.Article;
 import domain.Chirp;
+import domain.Folder;
 import domain.Newspaper;
 import domain.User;
 
@@ -32,6 +33,9 @@ public class UserService {
 	@Autowired
 	private ActorService	actorService;
 
+	@Autowired
+	private FolderService	folderService;
+
 
 	//Simple CRUD Methods --------------------------------
 
@@ -47,6 +51,7 @@ public class UserService {
 		user.setChirps(new ArrayList<Chirp>());
 		user.setFollowers(new ArrayList<User>());
 		user.setNewspapers(new ArrayList<Newspaper>());
+		user.setFolders(new ArrayList<Folder>());
 
 		return user;
 	}
@@ -64,13 +69,18 @@ public class UserService {
 	public User save(final User user) {
 		Assert.notNull(user);
 
+		final User saved2;
 		//Assertion that the user modifying this user has the correct privilege.
-		if (user.getId() != 0)
+		if (user.getId() != 0) {
 			Assert.isTrue(this.actorService.findByPrincipal().getId() == user.getId());
+			saved2 = this.userRepository.save(user);
+		} else {
+			final User saved = this.userRepository.save(user);
+			saved.setFolders(this.folderService.generateDefaultFolders(saved));
+			saved2 = this.userRepository.save(saved);
+		}
 
-		final User saved = this.userRepository.save(user);
-
-		return saved;
+		return saved2;
 	}
 
 	public void delete(final User user) {

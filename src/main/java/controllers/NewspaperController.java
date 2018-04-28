@@ -1,6 +1,7 @@
 
 package controllers;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.NewspaperService;
+import services.VolumeService;
 import domain.Newspaper;
+import domain.Volume;
 
 @Controller
 @RequestMapping("newspaper")
@@ -21,6 +24,9 @@ public class NewspaperController extends AbstractController {
 
 	@Autowired
 	private NewspaperService	newspaperService;
+
+	@Autowired
+	private VolumeService		volumeService;
 
 
 	//Listing
@@ -62,6 +68,20 @@ public class NewspaperController extends AbstractController {
 		result.addObject("newspapers", newspapers);
 		result.addObject("requestURI", "newspaper/list.do");
 		result.addObject("forCreate", forCreate);
+
+		return result;
+	}
+
+	@RequestMapping(value = "/listVolume", method = RequestMethod.GET)
+	public ModelAndView listVolume(@RequestParam final int varId) {
+		final ModelAndView result;
+		Collection<Newspaper> newspapers = new ArrayList<Newspaper>();
+		final Volume volume = this.volumeService.findOne(varId);
+		newspapers = volume.getNewspapers();
+
+		result = new ModelAndView("newspaper/list");
+		result.addObject("newspapers", newspapers);
+		result.addObject("requestURI", "newspaper/listVolume.do");
 
 		return result;
 	}

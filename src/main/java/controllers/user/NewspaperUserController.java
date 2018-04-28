@@ -44,7 +44,7 @@ public class NewspaperUserController extends AbstractController {
 
 		result = new ModelAndView("newspaper/list");
 		result.addObject("newspapers", newspapers);
-		result.addObject("requestURI", "newspaper/list.do");
+		result.addObject("requestURI", "newspaper/user/list.do");
 		result.addObject("forCreate", forCreate);
 		return result;
 	}
@@ -65,11 +65,11 @@ public class NewspaperUserController extends AbstractController {
 	//Edition
 
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public ModelAndView edit(@RequestParam final int newspaperId) {
+	public ModelAndView edit(@RequestParam final int varId) {
 		final ModelAndView result;
 		Newspaper newspaper;
 
-		newspaper = this.newspaperService.findOne(newspaperId);
+		newspaper = this.newspaperService.findOne(varId);
 		Assert.notNull(newspaper);
 		result = this.createEditModelAndView(newspaper);
 
@@ -85,62 +85,10 @@ public class NewspaperUserController extends AbstractController {
 		else
 			try {
 				this.newspaperService.save(newspaper);
-				result = new ModelAndView("redirect:list.do");
+				result = new ModelAndView("redirect:/newspaper/list.do");
 			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(newspaper, "newspaper.commit.error");
 			}
-		return result;
-	}
-
-	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
-	public ModelAndView delete(final Newspaper newspaper, final BindingResult binding) {
-		ModelAndView result;
-
-		try {
-			this.newspaperService.delete(newspaper);
-			result = new ModelAndView("redirect:list.do");
-		} catch (final Throwable oops) {
-			result = this.createEditModelAndView(newspaper, "newspaper.commit.error");
-		}
-		return result;
-	}
-
-	//Delete
-
-	//	@RequestMapping(value = "/delete", method = RequestMethod.GET)
-	//	public ModelAndView delete(@RequestParam final int varId) {
-	//		final ModelAndView result;
-	//		Collection<Newspaper> newspapers;
-	//		Newspaper newspaper;
-	//
-	//		result = new ModelAndView("newspaper/list");
-	//		newspapers = ((User) this.actorService.findByPrincipal()).getNewspapers();
-	//
-	//		newspaper = this.newspaperService.findOne(varId);
-	//
-	//		this.newspaperService.delete(newspaper);
-	//		newspapers = ((User) this.actorService.findByPrincipal()).getNewspapers();
-	//
-	//		result.addObject("socialIdentities", newspapers);
-	//		result.addObject("requestURI", "newspaper/list.do");
-	//
-	//		return result;
-	//	}
-
-	@RequestMapping(value = "/delete", method = RequestMethod.GET)
-	public ModelAndView delete(@RequestParam final Integer varId) {
-
-		ModelAndView result;
-		Newspaper newspaper;
-		newspaper = this.newspaperService.findOne(varId);
-
-		try {
-			this.newspaperService.delete(newspaper);
-			result = new ModelAndView("redirect:/newspaper/listPublished.do");
-		} catch (final Throwable oops) {
-
-			result = new ModelAndView("redirect:/newspaper/listPublished.do");
-		}
 		return result;
 	}
 

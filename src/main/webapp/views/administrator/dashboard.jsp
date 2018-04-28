@@ -40,6 +40,10 @@
 <spring:message code="administrator.querya3" var="querya3" />
 <spring:message code="administrator.querya4" var="querya4" />
 <spring:message code="administrator.querya5" var="querya5" />
+<spring:message code="administrator.query2c1" var="query2c1" />
+<spring:message code="administrator.query2c2" var="query2c2" />
+<spring:message code="administrator.query2b1" var="query2b1" />
+<spring:message code="administrator.query2b2" var="query2b2" />
 <spring:message code="administrator.return" var="returnMsg" />
 
 <security:authorize access="hasRole('ADMIN')">
@@ -119,6 +123,22 @@
 		<tr>
 			<td><jstl:out value="${querya5}" /></td>
 			<td><jstl:out value="${ratioPrivatePublicPerUser}" /></td>
+		</tr>
+		<tr>
+			<td><jstl:out value="${query2c1}" /></td>
+			<td><jstl:out value="${ratioNewspapersWithAd}" /></td>
+		</tr>
+		<tr>
+			<td><jstl:out value="${query2c2}" /></td>
+			<td><jstl:out value="${ratioAdsWithTabooWord}" /></td>
+		</tr>
+		<tr>
+			<td><jstl:out value="${query2b1}" /></td>
+			<td><jstl:out value="${avgNewspapersPerVolume}" /></td>
+		</tr>
+		<tr>
+			<td><jstl:out value="${query2b2}" /></td>
+			<td><jstl:out value="${ratioSubscriptionsVolumesNewspapers}" /></td>
 		</tr>
 	</table>
 

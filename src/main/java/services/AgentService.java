@@ -15,6 +15,7 @@ import security.Authority;
 import security.UserAccount;
 import domain.Advertisement;
 import domain.Agent;
+import domain.Folder;
 
 @Service
 @Transactional
@@ -30,6 +31,9 @@ public class AgentService {
 	@Autowired
 	private ActorService	actorService;
 
+	@Autowired
+	private FolderService	folderService;
+
 
 	//Simple CRUD Methods --------------------------------
 
@@ -42,6 +46,7 @@ public class AgentService {
 		final Agent agent = new Agent();
 		agent.setUserAccount(account);
 		agent.setAdvertisements(new ArrayList<Advertisement>());
+		agent.setFolders(new ArrayList<Folder>());
 
 		return agent;
 	}
@@ -59,19 +64,24 @@ public class AgentService {
 	public Agent save(final Agent agent) {
 		Assert.notNull(agent);
 
-		//Assertion that the user modifying this agent has the correct privilege.
-		if (agent.getId() != 0)
+		final Agent saved2;
+		//Assertion that the agent modifying this agent has the correct privilege.
+		if (agent.getId() != 0) {
 			Assert.isTrue(this.actorService.findByPrincipal().getId() == agent.getId());
+			saved2 = this.agentRepository.save(agent);
+		} else {
+			final Agent saved = this.agentRepository.save(agent);
+			saved.setFolders(this.folderService.generateDefaultFolders(saved));
+			saved2 = this.agentRepository.save(saved);
+		}
 
-		final Agent saved = this.agentRepository.save(agent);
-
-		return saved;
+		return saved2;
 	}
 
 	public void delete(final Agent agent) {
 		Assert.notNull(agent);
 
-		//Assertion that the user deleting this agent has the correct privilege.
+		//Assertion that the agent deleting this agent has the correct privilege.
 		Assert.isTrue(this.actorService.findByPrincipal().getId() == agent.getId());
 
 		this.agentRepository.delete(agent);

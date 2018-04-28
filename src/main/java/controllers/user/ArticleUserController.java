@@ -16,11 +16,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
 import services.ArticleService;
-import services.NewspaperService;
-import services.UserService;
 import controllers.AbstractController;
 import domain.Article;
-import domain.Newspaper;
 import domain.User;
 
 @Controller
@@ -30,16 +27,10 @@ public class ArticleUserController extends AbstractController {
 	//Services
 
 	@Autowired
-	private ActorService		actorService;
+	private ActorService	actorService;
 
 	@Autowired
-	private UserService			userService;
-
-	@Autowired
-	private ArticleService		articleService;
-
-	@Autowired
-	private NewspaperService	newspaperService;
+	private ArticleService	articleService;
 
 
 	//Creation
@@ -86,24 +77,6 @@ public class ArticleUserController extends AbstractController {
 		return result;
 	}
 
-	@RequestMapping(value = "/delete", method = RequestMethod.GET)
-	public ModelAndView delete(@RequestParam final Integer varId) {
-
-		ModelAndView result;
-		Article article;
-		article = this.articleService.findOne(varId);
-		final Newspaper newspaper = this.newspaperService.newspapersWhoContainsArticle(varId);
-
-		try {
-			this.articleService.delete(article, newspaper.getId());
-			result = new ModelAndView("redirect:/user/list.do");
-		} catch (final Throwable oops) {
-
-			result = new ModelAndView("redirect:/user/list.do");
-		}
-		return result;
-	}
-
 	//Listing
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
@@ -112,20 +85,6 @@ public class ArticleUserController extends AbstractController {
 		Collection<Article> articles;
 
 		articles = ((User) this.actorService.findByPrincipal()).getArticles();
-
-		result = new ModelAndView("article/list");
-		result.addObject("articles", articles);
-		result.addObject("requestURI", "article/list.do");
-
-		return result;
-	}
-
-	@RequestMapping(value = "/listByUser", method = RequestMethod.GET)
-	public ModelAndView list(@RequestParam final int varId) {
-		final ModelAndView result;
-		Collection<Article> articles;
-
-		articles = this.userService.articlesPublishedPerUser(varId);
 
 		result = new ModelAndView("article/list");
 		result.addObject("articles", articles);
