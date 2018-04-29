@@ -54,7 +54,7 @@
 	<jstl:out value="${user.address}" />
 	<br />
 
-	<spring:url var="listArticles" value="article/user/listByUser.do">
+	<spring:url var="listArticles" value="article/listByUser.do">
 		<spring:param name="varId" value="${user.id}" />
 	</spring:url>
 

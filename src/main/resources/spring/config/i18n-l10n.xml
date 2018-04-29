@@ -35,6 +35,7 @@
 		<value>/views/folder/messages</value>
 		<value>/views/mailMessage/messages</value>
 		<value>/views/advertisement/messages</value>
+		<value>/views/volume/messages</value>
 		
 	</util:list>
 

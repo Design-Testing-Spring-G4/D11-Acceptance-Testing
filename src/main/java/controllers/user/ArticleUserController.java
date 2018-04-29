@@ -62,7 +62,7 @@ public class ArticleUserController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(@Valid final Article article, final Integer varId, final BindingResult binding) {
 		ModelAndView result;
-		System.out.println("error:" + binding.getAllErrors());
+
 		if (binding.hasErrors())
 			result = this.createEditModelAndView(article, varId);
 		else
@@ -70,9 +70,7 @@ public class ArticleUserController extends AbstractController {
 				this.articleService.save(article, varId);
 				result = new ModelAndView("redirect:/newspaper/user/list.do");
 			} catch (final Throwable oops) {
-				System.out.println("oops:" + oops.getMessage());
 				result = this.createEditModelAndView(article, varId, "article.commit.error");
-				System.out.println(oops.getStackTrace());
 			}
 		return result;
 	}

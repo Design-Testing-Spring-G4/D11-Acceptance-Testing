@@ -30,6 +30,9 @@ public class VolumeService {
 	@Autowired
 	private ActorService		actorService;
 
+	@Autowired
+	private NewspaperService	newspaperService;
+
 
 	//Simple CRUD Methods --------------------------------
 
@@ -77,9 +80,17 @@ public class VolumeService {
 
 		final Volume saved = this.volumeRepository.save(volume);
 
+		for (final Newspaper n : saved.getNewspapers()) {
+			final Collection<Customer> customers = n.getCustomers();
+			if (!customers.contains(n)) {
+				customers.add((Customer) this.actorService.findByPrincipal());
+				n.setCustomers(customers);
+				this.newspaperService.saveInternal(n);
+			}
+		}
+
 		return saved;
 	}
-
 	public void delete(final Volume volume) {
 		Assert.notNull(volume);
 

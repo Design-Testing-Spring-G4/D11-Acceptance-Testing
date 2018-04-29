@@ -9,6 +9,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.SafeHtml;
+import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 import org.hibernate.validator.constraints.URL;
 
 @Entity
@@ -31,18 +33,21 @@ public class Advertisement extends DomainEntity {
 	//Getters
 
 	@NotBlank
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getTitle() {
 		return this.title;
 	}
 
 	@URL
 	@NotBlank
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getBanner() {
 		return this.banner;
 	}
 
 	@URL
 	@NotBlank
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getTarget() {
 		return this.target;
 	}

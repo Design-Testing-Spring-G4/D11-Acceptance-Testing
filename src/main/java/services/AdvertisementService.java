@@ -74,9 +74,6 @@ public class AdvertisementService {
 	public void delete(final Advertisement advertisement) {
 		Assert.notNull(advertisement);
 
-		//Assertion that the user deleting this advertisement has the correct privilege.
-		Assert.isTrue(this.actorService.findByPrincipal().getId() == advertisement.getAgent().getId());
-
 		this.advertisementRepository.delete(advertisement);
 	}
 

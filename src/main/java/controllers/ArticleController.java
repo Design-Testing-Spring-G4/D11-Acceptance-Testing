@@ -1,6 +1,7 @@
 
 package controllers;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import services.AdvertisementService;
 import services.ArticleService;
 import services.UserService;
+import domain.Advertisement;
 import domain.Article;
 
 @Controller
@@ -21,10 +24,13 @@ public class ArticleController extends AbstractController {
 	//Services
 
 	@Autowired
-	private ArticleService	articleService;
+	private ArticleService			articleService;
 
 	@Autowired
-	private UserService		userService;
+	private UserService				userService;
+
+	@Autowired
+	private AdvertisementService	advertisementService;
 
 
 	//Listing
@@ -61,17 +67,28 @@ public class ArticleController extends AbstractController {
 
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
 	public ModelAndView display(@RequestParam final int varId) {
-		ModelAndView result;
+		final ModelAndView result;
 		Article article;
+		Advertisement advertisement = null;
 		article = this.articleService.findOne(varId);
+		final Collection<Advertisement> ads = new ArrayList<Advertisement>();
+		for (final Advertisement a : this.advertisementService.findAll())
+			if (a.getNewspaper().getArticles().contains(article)) {
+				ads.addAll(a.getNewspaper().getAdvertisements());
+				break;
+			}
+		if (!ads.isEmpty()) {
+			final int i = (int) (Math.random() * ads.size());
+			advertisement = (Advertisement) ads.toArray()[i];
+		}
 
 		result = new ModelAndView("article/display");
 		result.addObject("article", article);
+		result.addObject("advertisement", advertisement);
 		result.addObject("requestURI", "article/display.do");
 
 		return result;
 	}
-
 	//Search
 	@RequestMapping(value = "/search", method = RequestMethod.GET)
 	public ModelAndView search() {

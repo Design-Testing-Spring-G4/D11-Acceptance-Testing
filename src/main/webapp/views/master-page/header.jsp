@@ -52,6 +52,8 @@
 					<security:authorize access="hasRole('ADMIN')">
 						<li><a href="administrator/dashboard.do"><spring:message
 									code="master.page.dashboard" /></a></li>
+						<li><a href="advertisement/administrator/list.do"><spring:message
+									code="master.page.advertisement.admin" /></a></li>
 					</security:authorize>
 
 					<security:authorize access="hasRole('USER')">
@@ -64,6 +66,10 @@
 					<security:authorize access="hasRole('AGENT')">
 						<li><a href="advertisement/agent/create.do"><spring:message
 									code="master.page.advertisement" /></a></li>
+						<li><a href="newspaper/agent/list.do?varId=0"><spring:message
+									code="master.page.list.newspaperAgent.with" /></a></li>
+						<li><a href="newspaper/agent/list.do?varId=1"><spring:message
+									code="master.page.list.newspaperAgent.without" /></a></li>
 					</security:authorize>
 					<li><a href="j_spring_security_logout"><spring:message
 								code="master.page.logout" /> </a></li>
@@ -85,6 +91,9 @@
 								code="master.page.newspaper.search" /></a>
 					<li>
 				</ul></li>
+			<li><a href="volume/list.do"><spring:message
+						code="master.page.volumes" /></a>
+					<li>
 
 		</security:authorize>
 

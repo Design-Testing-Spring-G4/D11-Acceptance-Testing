@@ -24,76 +24,67 @@
 
 <%-- Stored message variables --%>
 
-<spring:message code="newspaper.title" var="title" />
-<spring:message code="newspaper.publisher" var="publisher" />
-<spring:message code="newspaper.publicationDate" var="publicationDate" />
-<spring:message code="newspaper.description" var="description" />
-<spring:message code="newspaper.isPrivate" var="isPrivate" />
-<spring:message code="newspaper.display" var="display" />
-<spring:message code="newspaper.create" var="msgCreate" />
-<spring:message code="newspaper.dateInt" var="formatDate" />
-<spring:message code="acrticle.create" var="msgCreateArticle" />
-<spring:message code="newspaper.delete" var="msgDeleteNewspaper" />
+<spring:message code="volume.title" var="title" />
+<spring:message code="volume.description" var="description" />
+<spring:message code="volume.year" var="year" />
+<spring:message code="volume.publisher" var="publisher" />
+<spring:message code="volume.browse" var="browse" />
+<spring:message code="volume.edit" var="edit" />
+<spring:message code="volume.subscribe" var="subscribe" />
+<spring:message code="volume.create" var="create" />
 
 <security:authorize access="permitAll()">
 
 	<%-- Listing grid --%>
 
 	<display:table pagesize="5" class="displaytag" keepStatus="false"
-		name="newspapers" requestURI="${requestURI}" id="row">
+		name="volumes" requestURI="${requestURI}" id="row">
 
 		<%-- Attributes --%>
 
 		<display:column property="title" title="${title}" />
-
-		<display:column property="publisher.userAccount.username"
-			title="${publisher}" />
-
-		<display:column title="${publicationDate}">
-			<fmt:formatDate value="${row.publicationDate}"
-				pattern="${formatDate}" />
-		</display:column>
-
+		
 		<display:column property="description" title="${description}" />
-
-		<display:column property="isPrivate" title="${isPrivate}" />
+		
+		<display:column property="year" title="${year}" />
+		
+		<display:column property="publisher.name" title="${publisher}" />
 
 		<%-- Links towards edition, display and others --%>
 
-		<spring:url var="displayUrl" value="newspaper/display.do">
+		<spring:url var="browseUrl" value="volume/listNewspapers.do">
 			<spring:param name="varId" value="${row.id}" />
 		</spring:url>
 
 		<display:column>
-			<a href="${displayUrl}"><jstl:out value="${display}" /></a>
+			<a href="${browseUrl}"><jstl:out value="${browse}" /></a>
 		</display:column>
-
-
-		<security:authorize access="hasRole('ADMIN')">
-			<spring:url var="deleteUrl" value="newspaper/user/delete.do">
+			
+		<security:authorize access="hasRole('USER')">
+			<spring:url var="editUrl" value="volume/user/edit.do">
 				<spring:param name="varId" value="${row.id}" />
 			</spring:url>
-
+			
 			<display:column>
-				<a href="${deleteUrl}"><jstl:out value="${msgDeleteNewspaper}" /></a>
+				<a href="${editUrl}"><jstl:out value="${edit}" /></a>
 			</display:column>
 		</security:authorize>
-		
-		<jstl:if test="${forCreate == true}">
-			<spring:url var="createArticle" value="article/user/create.do">
+
+		<security:authorize access="hasRole('CUSTOMER')">
+			<spring:url var="subscribeUrl" value="volume/customer/subscribe.do">
 				<spring:param name="varId" value="${row.id}" />
 			</spring:url>
 
 			<display:column>
-				<a href="${createArticle}"><jstl:out value="${msgCreateArticle}" /></a>
+				<a href="${subscribeUrl}"><jstl:out value="${subscribe}" /></a>
 			</display:column>
-		</jstl:if>
+		</security:authorize>
 
 	</display:table>
 
 	<security:authorize access="hasRole('USER')">
-		<spring:url var="createUrl" value="newspaper/user/create.do" />
-		<a href="${createUrl}"><jstl:out value="${msgCreate}" /></a>
+		<spring:url var="createUrl" value="volume/user/create.do" />
+		<a href="${createUrl}"><jstl:out value="${create}" /></a>
 	</security:authorize>
 
 </security:authorize>

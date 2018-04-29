@@ -19,6 +19,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.SafeHtml;
+import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -48,6 +50,7 @@ public class Newspaper extends DomainEntity {
 	//Getters
 
 	@NotBlank
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getTitle() {
 		return this.title;
 	}
@@ -60,12 +63,14 @@ public class Newspaper extends DomainEntity {
 	}
 
 	@NotBlank
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getDescription() {
 		return this.description;
 	}
 
 	@URL
 	@NotNull
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getPicture() {
 		return this.picture;
 	}

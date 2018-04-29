@@ -53,7 +53,7 @@
 	<br />
 
 	<jstl:if test="${newspaper.picture != ''}">
-		<img src="${newspaper.picture}" />
+		<img src="${newspaper.picture}" height="200" width="300"/>
 		<br />
 	</jstl:if>
 
@@ -65,7 +65,19 @@
 		</spring:url>
 
 		<display:column>
-			<a href="${articleUrl}"><jstl:out value="${row.title}" /></a>
+			<jstl:choose>
+				<jstl:when test="${newspaper.isPrivate eq true}">
+					<security:authorize access="hasRole('CUSTOMER')">
+						<a href="${articleUrl}"><jstl:out value="${row.title}" /></a>
+					</security:authorize>
+					<security:authorize access="!hasRole('CUSTOMER')">
+						<jstl:out value="${row.title}" />
+					</security:authorize>
+				</jstl:when>
+				<jstl:otherwise>
+					<a href="${articleUrl}"><jstl:out value="${row.title}" /></a>
+				</jstl:otherwise>
+			</jstl:choose>
 		</display:column>
 
 		<spring:url var="writerUrl" value="user/display.do">
@@ -77,24 +89,9 @@
 		</display:column>
 
 		<display:column property="summary" title="${articleSummary}"
-			sortable="true" />
-
-		<spring:url var="editArticle" value="article/user/edit.do">
-			<spring:param name="varId" value="${row.id}" />
-		</spring:url>
-
-		<display:column>
-			<a href="${editArticle}"><jstl:out value="${msgEditArticle}" /></a>
-		</display:column>
+			sortable="true" maxLength="120"/>
 
 	</display:table>
-
-
-
-		
-		
-
-
 
 	<a href="newspaper/list.do"><jstl:out value="${msgReturn}" /></a>
 

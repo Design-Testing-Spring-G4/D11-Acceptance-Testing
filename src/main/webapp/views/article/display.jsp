@@ -33,6 +33,13 @@
 <%-- For the selected newspaper in the list received as model, display the following information: --%>
 	
 <security:authorize access="permitAll()">
+	
+	<jstl:if test="${advertisement != null}">
+		<a href="${advertisement.target}">
+			<img src="${advertisement.banner}" height="150" width="550">
+		</a>
+		<hr/>
+	</jstl:if>
 
 	<jstl:out value="${articleTitle}" />:&nbsp;
 	<jstl:out value="${article.title}" />
@@ -50,16 +57,12 @@
 	<jstl:out value="${article.body}" />
 	<br />
 	
-	<jstl:out value="${finalMode}" />:&nbsp;
-	<jstl:out value="${article.finalMode}" />
-	<br />
-	
 	<jstl:if test="${newspaper.picture != ''}">
-		<img src="${newspaper.picture}" />
-<%-- 		<jstl:forEach var="picture" items="${newspaper.picture}">
-		<img src="${newspaper.picture}" />
+		<!-- <img src="${newspaper.picture}" height="200" width="300"/> -->
+ 		<jstl:forEach var="picture" items="${newspaper.picture}">
+			<img src="${picture}" height="200" width="300"/>
 		</jstl:forEach>
-		<br /> --%>
+		<br />
 	</jstl:if>
 	
 

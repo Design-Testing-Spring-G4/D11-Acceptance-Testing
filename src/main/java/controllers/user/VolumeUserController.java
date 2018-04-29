@@ -3,13 +3,17 @@ package controllers.user;
 
 import java.util.Collection;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import services.ActorService;
 import services.NewspaperService;
 import services.VolumeService;
 import controllers.AbstractController;
@@ -28,6 +32,9 @@ public class VolumeUserController extends AbstractController {
 	@Autowired
 	private NewspaperService	newspaperService;
 
+	@Autowired
+	private ActorService		actorService;
+
 
 	//Creation
 
@@ -42,21 +49,44 @@ public class VolumeUserController extends AbstractController {
 		return result;
 	}
 
+	@RequestMapping(value = "/create", method = RequestMethod.POST, params = "save")
+	public ModelAndView save(@Valid final Volume volume, final Integer varId, final BindingResult binding) {
+		ModelAndView result;
+
+		if (binding.hasErrors())
+			result = this.createEditModelAndView(volume);
+		else
+			try {
+				this.volumeService.save(volume);
+				result = new ModelAndView("redirect:/volume/list.do");
+			} catch (final Throwable oops) {
+				result = this.createEditModelAndView(volume, "volume.commit.error");
+			}
+		return result;
+	}
+
 	//Edition
 
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public ModelAndView edit(@RequestParam final int varId) {
 		final ModelAndView result;
 		Collection<Newspaper> newspapers;
+		Volume volume;
+
 		newspapers = this.newspaperService.newspapersForToPublish();
-		result = new ModelAndView("volume/edit");
-		result.addObject("newspapers", newspapers);
-		result.addObject("varId", varId);
-		result.addObject("requestURI", "volume/user/edit.do");
+		volume = this.volumeService.findOne(varId);
+
+		if (this.actorService.findByPrincipal().getId() != volume.getPublisher().getId())
+			result = new ModelAndView("redirect:/volume/list.do");
+		else {
+			result = new ModelAndView("volume/edit");
+			result.addObject("newspapers", newspapers);
+			result.addObject("volume", volume);
+			result.addObject("requestURI", "volume/user/edit.do");
+		}
 
 		return result;
 	}
-
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
 	public ModelAndView add(@RequestParam final int varId, final int var2Id) {
 		final ModelAndView result;
@@ -105,14 +135,11 @@ public class VolumeUserController extends AbstractController {
 
 	protected ModelAndView createEditModelAndView(final Volume volume, final String messageCode) {
 		ModelAndView result;
-		final Collection<Newspaper> newspapers;
-		newspapers = this.newspaperService.newspapersForToPublish();
 
-		result = new ModelAndView("volume/edit");
+		result = new ModelAndView("volume/create");
 		result.addObject("volume", volume);
-		result.addObject("newspapers", newspapers);
 		result.addObject("message", messageCode);
-		result.addObject("requestURI", "volume/user/edit.do");
+		result.addObject("requestURI", "volume/user/create.do");
 
 		return result;
 	}

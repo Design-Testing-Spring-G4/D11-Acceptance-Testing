@@ -3,6 +3,7 @@ package controllers;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -48,7 +49,7 @@ public class NewspaperController extends AbstractController {
 	@RequestMapping(value = "/listPublished", method = RequestMethod.GET)
 	public ModelAndView listPublished() {
 		final ModelAndView result;
-		Collection<Newspaper> newspapers;
+		Set<Newspaper> newspapers;
 		newspapers = this.newspaperService.newspapersForToPublish();
 		result = new ModelAndView("newspaper/list");
 		result.addObject("newspapers", newspapers);
@@ -91,7 +92,6 @@ public class NewspaperController extends AbstractController {
 	public ModelAndView display(@RequestParam final int varId) {
 		ModelAndView result;
 		Newspaper newspaper;
-		System.out.println("id: " + varId);
 		newspaper = this.newspaperService.findOne(varId);
 
 		result = new ModelAndView("newspaper/display");
@@ -100,6 +100,7 @@ public class NewspaperController extends AbstractController {
 
 		return result;
 	}
+
 	//Search 
 
 	@RequestMapping(value = "/search", method = RequestMethod.GET)

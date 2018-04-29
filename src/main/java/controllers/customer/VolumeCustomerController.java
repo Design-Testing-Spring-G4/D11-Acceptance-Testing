@@ -1,9 +1,6 @@
 
 package controllers.customer;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +13,6 @@ import org.springframework.web.servlet.ModelAndView;
 import services.ActorService;
 import services.VolumeService;
 import controllers.AbstractController;
-import domain.CreditCard;
 import domain.Customer;
 import domain.Volume;
 
@@ -39,15 +35,15 @@ public class VolumeCustomerController extends AbstractController {
 	public ModelAndView subscribe(final int varId) {
 		final ModelAndView result;
 		Volume volume;
-		Collection<CreditCard> creditCards = new ArrayList<CreditCard>();
+		Customer customer;
 
 		volume = this.volumeService.findOne(varId);
-		creditCards = ((Customer) this.actorService.findByPrincipal()).getCreditCards();
+		customer = (Customer) this.actorService.findByPrincipal();
 
 		result = new ModelAndView("volume/subscribe");
 		result.addObject("volume", volume);
-		result.addObject("creditCards", creditCards);
-		result.addObject("requestURI", "volume/subscribe.do");
+		result.addObject("customer", customer);
+		result.addObject("requestURI", "volume/customer/subscribe.do");
 
 		return result;
 	}
@@ -57,13 +53,13 @@ public class VolumeCustomerController extends AbstractController {
 		ModelAndView result;
 
 		if (binding.hasErrors())
-			result = new ModelAndView("redirect:/newspaper/list.do");
+			result = new ModelAndView("redirect:/volume/list.do");
 		else
 			try {
 				this.volumeService.saveSubscribe(volume);
-				result = new ModelAndView("redirect:/newspaper/list.do");
+				result = new ModelAndView("redirect:/volume/list.do");
 			} catch (final Throwable oops) {
-				result = new ModelAndView("redirect:/newspaper/list.do");
+				result = new ModelAndView("redirect:/volume/list.do");
 			}
 		return result;
 	}

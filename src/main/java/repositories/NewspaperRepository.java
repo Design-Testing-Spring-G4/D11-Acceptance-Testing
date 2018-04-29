@@ -3,6 +3,7 @@ package repositories;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -42,7 +43,7 @@ public interface NewspaperRepository extends JpaRepository<Newspaper, Integer> {
 	Double ratioNewspapersWithAd();
 
 	@Query("select n from Newspaper n join n.articles a where a.finalMode = true and n.publicationDate <= ?1")
-	Collection<Newspaper> newspapersForToPublish(Date date);
+	Set<Newspaper> newspapersForToPublish(Date date);
 
 	@Query("select n from Newspaper n where n.publicationDate > ?1")
 	Collection<Newspaper> newspapersForNotToPublish(Date date);

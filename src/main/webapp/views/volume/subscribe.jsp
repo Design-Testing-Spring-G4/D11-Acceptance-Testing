@@ -1,5 +1,5 @@
 <%--
- * create.jsp
+ * subscribe.jsp
  *
  * Copyright (C) 2017 Universidad de Sevilla
  * 
@@ -19,28 +19,22 @@
 
 <%-- Stored message variables --%>
 
-<spring:message code="advertisement.title" var="title" />
-<spring:message code="advertisement.banner" var="banner" />
-<spring:message code="advertisement.target" var="target" />
-<spring:message code="advertisement.newspaper" var="newspaper" />
-<spring:message code="advertisement.creditCard.holder" var="holder" />
-<spring:message code="advertisement.creditCard.brand" var="brand" />
-<spring:message code="advertisement.creditCard.number" var="number" />
-<spring:message code="advertisement.creditCard.expMonth" var="expMonth" />
-<spring:message code="advertisement.creditCard.expYear" var="expYear" />
-<spring:message code="advertisement.creditCard.cvv" var="cvv" />
-<spring:message code="advertisement.save" var="save" />
-<spring:message code="advertisement.cancel" var="cancel" />
+<spring:message code="volume.title" var="title" />
 
-<security:authorize access="hasRole('AGENT')">
+<security:authorize access="hasRole('CUSTOMER')">
 
-<form:form id="form" action="${requestURI}" modelAttribute="advertisement">
+<form:form id="form" action="${requestURI}" modelAttribute="customer">
 
 	<%-- Forms --%>
 	
 	<form:hidden path="id" />
 	<form:hidden path="version" />
-	<form:hidden path="agent" />
+	<form:hidden path="name" />
+	<form:hidden path="surname" />
+	<form:hidden path="email" />
+	<form:hidden path="id" />
+	<form:hidden path="id" />
+	<form:hidden path="id" />
 		
 	<form:label path="title">
 		<jstl:out value="${title}" />:
@@ -63,10 +57,10 @@
 			<form:errors cssClass="error" path="target" />
 	<br />
 	
-	<form:label path="newspaper">
-		<jstl:out value="${newspaper}" />:
+	<form:label path="creditCards">
+		<jstl:out value="${creditCards}" />:
 	</form:label>
-	<form:select path="newspaper">
+	<form:select path="creditCards">
 		<form:option label="----" value="0" />
 		<form:options items="${newspapers}" itemLabel="title"/>
 	</form:select>

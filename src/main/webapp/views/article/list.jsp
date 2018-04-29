@@ -47,16 +47,14 @@
 
 		<display:column property="title" title="${title}" />
 
-		<display:column property="writer.userAccount.username"
+		<display:column property="writer.name"
 			title="${writer}" sortable="true" />
 
 		<display:column title="${moment}" sortable="true">
 			<fmt:formatDate value="${row.moment}" pattern="${formatDate}" />
 		</display:column>
 
-		<display:column property="summary" title="${summary}" />
-
-		<display:column property="body" title="${body}" />
+		<display:column property="summary" title="${summary}" maxLength="120" />
 
 		<display:column property="finalMode" title="${finalMode}"
 			sortable="true" />
