@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.AdvertisementService;
@@ -34,11 +35,11 @@ public class AdvertisementAgentController extends AbstractController {
 	//Creation
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public ModelAndView create() {
+	public ModelAndView create(@RequestParam final int varId) {
 		final ModelAndView result;
 		Advertisement advertisement;
-
-		advertisement = this.advertisementService.create();
+		final Newspaper newspaper = this.newspaperService.findOne(varId);
+		advertisement = this.advertisementService.create(newspaper.getId());
 		result = this.createEditModelAndView(advertisement);
 
 		return result;
