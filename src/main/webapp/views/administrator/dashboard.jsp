@@ -38,7 +38,7 @@
 <spring:message code="administrator.querya1" var="querya1" />
 <spring:message code="administrator.querya2" var="querya2" />
 <spring:message code="administrator.querya3" var="querya3" />
-<spring:message code="administrator.querya4" var="querya4" />
+<%--<spring:message code="administrator.querya4" var="querya4" />--%>
 <spring:message code="administrator.querya5" var="querya5" />
 <spring:message code="administrator.query2c1" var="query2c1" />
 <spring:message code="administrator.query2c2" var="query2c2" />
@@ -116,10 +116,10 @@
 			<td><jstl:out value="${querya3}" /></td>
 			<td><jstl:out value="${avgArticlesPerPublicNewspaper}" /></td>
 		</tr>
-		<tr>
+		<%--<tr>
 			<td><jstl:out value="${querya4}" /></td>
 			<td><jstl:out value="${ratioCustomerSubscriber}" /></td>
-		</tr>
+		</tr>--%>
 		<tr>
 			<td><jstl:out value="${querya5}" /></td>
 			<td><jstl:out value="${ratioPrivatePublicPerUser}" /></td>

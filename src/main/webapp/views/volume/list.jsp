@@ -71,7 +71,7 @@
 		</security:authorize>
 
 		<security:authorize access="hasRole('CUSTOMER')">
-			<spring:url var="subscribeUrl" value="volume/customer/subscribe.do">
+			<spring:url var="subscribeUrl" value="subscription/customer/create.do">
 				<spring:param name="varId" value="${row.id}" />
 			</spring:url>
 

@@ -22,8 +22,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.AdvertisementService;
 import services.ArticleService;
-import services.CustomerService;
 import services.NewspaperService;
+import services.SubscriptionService;
 import services.UserService;
 import services.VolumeService;
 import controllers.AbstractController;
@@ -46,13 +46,13 @@ public class AdministratorController extends AbstractController {
 	private ArticleService			articleService;
 
 	@Autowired
-	private CustomerService			customerService;
-
-	@Autowired
 	private AdvertisementService	advertisementService;
 
 	@Autowired
 	private VolumeService			volumeService;
+
+	@Autowired
+	private SubscriptionService		subscriptionService;
 
 
 	//Dashboard
@@ -96,13 +96,12 @@ public class AdministratorController extends AbstractController {
 		result.addObject("ratioPublicNewspapers", this.newspaperService.ratioPublicNewspapers());
 		result.addObject("avgArticlesPerPrivateNewspaper", this.newspaperService.avgArticlesPerPrivateNewspaper());
 		result.addObject("avgArticlesPerPublicNewspaper", this.newspaperService.avgArticlesPerPublicNewspaper());
-		result.addObject("ratioCustomerSubscriber", this.customerService.ratioCustomerSubscriber());
 		result.addObject("ratioPrivatePublicPerUser", ratioPrivatePublicPerUser);
 
 		result.addObject("ratioNewspapersWithAd", this.newspaperService.ratioNewspapersWithAd());
 		result.addObject("ratioAdsWithTabooWord", this.advertisementService.ratioAdsWithTabooWord());
 		result.addObject("avgNewspapersPerVolume", this.volumeService.avgNewspapersPerVolume());
-		result.addObject("ratioSubscriptionsVolumesNewspapers", this.volumeService.ratioSubscriptionsVolumesNewspapers());
+		result.addObject("ratioSubscriptionsVolumesNewspapers", this.subscriptionService.ratioSubscriptionsVolumesNewspapers());
 
 		result.addObject("requestURI", "administrator/dashboard.do");
 

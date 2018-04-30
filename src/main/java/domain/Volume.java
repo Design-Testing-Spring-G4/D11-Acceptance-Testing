@@ -30,7 +30,6 @@ public class Volume extends DomainEntity {
 
 	private User					publisher;
 	private Collection<Newspaper>	newspapers;
-	private Collection<Customer>	subscriptions;
 
 
 	//Getters
@@ -66,13 +65,6 @@ public class Volume extends DomainEntity {
 		return this.newspapers;
 	}
 
-	@NotNull
-	@Valid
-	@ManyToMany
-	public Collection<Customer> getSubscriptions() {
-		return this.subscriptions;
-	}
-
 	//Setters
 
 	public void setTitle(final String title) {
@@ -93,9 +85,5 @@ public class Volume extends DomainEntity {
 
 	public void setNewspapers(final Collection<Newspaper> newspapers) {
 		this.newspapers = newspapers;
-	}
-
-	public void setSubscriptions(final Collection<Customer> subscriptions) {
-		this.subscriptions = subscriptions;
 	}
 }

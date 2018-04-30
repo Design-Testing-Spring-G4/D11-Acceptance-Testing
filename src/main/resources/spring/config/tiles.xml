@@ -33,6 +33,7 @@
 		<value>/views/volume/tiles.xml</value>
 		
 		<value>/views/agent/tiles.xml</value>
+		<value>/views/subscription/tiles.xml</value>
 		<value>/views/folder/tiles.xml</value>
 		<value>/views/mailMessage/tiles.xml</value>
 		<value>/views/advertisement/tiles.xml</value>

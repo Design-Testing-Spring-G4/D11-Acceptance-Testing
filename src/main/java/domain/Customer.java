@@ -3,31 +3,31 @@ package domain;
 
 import java.util.Collection;
 
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 @Entity
 public class Customer extends Actor {
 
-	//Attributes
+	//Relationships
 
-	private Collection<CreditCard>	creditCards;
+	private Collection<Subscription>	subscriptions;
 
 
 	//Getters
 
-	@ElementCollection
 	@NotNull
 	@Valid
-	public Collection<CreditCard> getCreditCards() {
-		return this.creditCards;
+	@OneToMany(mappedBy = "customer")
+	public Collection<Subscription> getSubscriptions() {
+		return this.subscriptions;
 	}
 
 	//Setters
 
-	public void setCreditCards(final Collection<CreditCard> creditCards) {
-		this.creditCards = creditCards;
+	public void setSubscriptions(final Collection<Subscription> subscriptions) {
+		this.subscriptions = subscriptions;
 	}
 }

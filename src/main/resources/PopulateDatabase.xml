@@ -115,9 +115,10 @@
 		<property name="phone" value="+34922832727" />
 		<property name="address" value="Pza. España 29, Bilbao" />
 		<property name="userAccount" ref="userAccount2" />
-		<property name="creditCards">
+		<property name="subscriptions">
 			<list>
-				<ref bean="creditCard1" />
+				<ref bean="subscription1" />
+				<ref bean="subscription2" />
 			</list>
 		</property>
 		<property name="folders">
@@ -138,10 +139,8 @@
 		<property name="phone" value="543254357" />
 		<property name="address" value="Cambridge St. 114, Brighton, UK" />
 		<property name="userAccount" ref="userAccount3" />
-		<property name="creditCards">
-			<list>
-				<ref bean="creditCard2" />
-			</list>
+		<property name="subscriptions">
+			<list></list>
 		</property>
 		<property name="folders">
 			<list>
@@ -293,10 +292,6 @@
 		<property name="picture" value="" />
 		<property name="isPrivate" value="false" />
 		<property name="publisher" ref="user1" />
-		<property name="customers">
-			<list>
-			</list>
-		</property>
 		<property name="articles">
 			<list>
 				<ref bean="article3" />
@@ -317,12 +312,6 @@
 		<property name="picture" value="" />
 		<property name="isPrivate" value="true" />
 		<property name="publisher" ref="user2" />
-		<property name="customers">
-			<list>
-				<ref bean="customer1" />
-				<ref bean="customer2" />
-			</list>
-		</property>
 		<property name="articles">
 			<list>
 				<ref bean="article1" />
@@ -342,10 +331,6 @@
 		<property name="picture" value="" />
 		<property name="isPrivate" value="true" />
 		<property name="publisher" ref="user2" />
-		<property name="customers">
-			<list>
-			</list>
-		</property>
 		<property name="articles">
 			<list>
 			</list>
@@ -474,6 +459,22 @@
 		</property>
 	</bean>
 	
+	<!-- Subscription beans -->
+	
+	<bean id="subscription1" class="domain.Subscription">
+		<property name="creditCard" ref="creditCard1" />
+		<property name="customer" ref="customer1" />
+		<property name="volume"><null/></property>
+		<property name="newspaper" ref="newspaper1" />
+	</bean>
+	
+	<bean id="subscription2" class="domain.Subscription">
+		<property name="creditCard" ref="creditCard2" />
+		<property name="customer" ref="customer1" />
+		<property name="volume"><null/></property>
+		<property name="newspaper" ref="newspaper2" />
+	</bean>
+	
 	<!-- Advertisement beans -->
 	
 	<bean id="advertisement1" class="domain.Advertisement">
@@ -506,9 +507,6 @@
 				<ref bean="newspaper1" />
 				<ref bean="newspaper2" />
 			</list>
-		</property>
-		<property name="subscriptions">
-			<list></list>
 		</property>
 	</bean>
 	

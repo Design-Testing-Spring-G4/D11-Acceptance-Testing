@@ -10,8 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import repositories.VolumeRepository;
-import security.Authority;
-import domain.Customer;
 import domain.Newspaper;
 import domain.User;
 import domain.Volume;
@@ -30,9 +28,6 @@ public class VolumeService {
 	@Autowired
 	private ActorService		actorService;
 
-	@Autowired
-	private NewspaperService	newspaperService;
-
 
 	//Simple CRUD Methods --------------------------------
 
@@ -42,7 +37,6 @@ public class VolumeService {
 		final User publisher = (User) this.actorService.findByPrincipal();
 		volume.setPublisher(publisher);
 		volume.setNewspapers(new ArrayList<Newspaper>());
-		volume.setSubscriptions(new ArrayList<Customer>());
 
 		return volume;
 	}
@@ -68,29 +62,6 @@ public class VolumeService {
 		return saved;
 	}
 
-	public Volume saveSubscribe(final Volume volume) {
-		Assert.notNull(volume);
-
-		//Assertion that the user modifying this volume is a subscribing customer.
-		Assert.isTrue(this.actorService.findByPrincipal().getUserAccount().getAuthorities().contains(Authority.CUSTOMER));
-
-		final Collection<Customer> subscriptions = volume.getSubscriptions();
-		subscriptions.add((Customer) this.actorService.findByPrincipal());
-		volume.setSubscriptions(subscriptions);
-
-		final Volume saved = this.volumeRepository.save(volume);
-
-		for (final Newspaper n : saved.getNewspapers()) {
-			final Collection<Customer> customers = n.getCustomers();
-			if (!customers.contains(n)) {
-				customers.add((Customer) this.actorService.findByPrincipal());
-				n.setCustomers(customers);
-				this.newspaperService.saveInternal(n);
-			}
-		}
-
-		return saved;
-	}
 	public void delete(final Volume volume) {
 		Assert.notNull(volume);
 
@@ -104,9 +75,5 @@ public class VolumeService {
 
 	public Double avgNewspapersPerVolume() {
 		return this.volumeRepository.avgNewspapersPerVolume();
-	}
-
-	public Double ratioSubscriptionsVolumesNewspapers() {
-		return this.volumeRepository.ratioSubscriptionsVolumesNewspapers();
 	}
 }

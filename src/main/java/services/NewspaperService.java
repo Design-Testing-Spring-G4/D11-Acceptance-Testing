@@ -13,7 +13,6 @@ import org.springframework.util.Assert;
 
 import repositories.NewspaperRepository;
 import domain.Article;
-import domain.Customer;
 import domain.Newspaper;
 import domain.User;
 
@@ -38,7 +37,6 @@ public class NewspaperService {
 		final Newspaper newspaper = new Newspaper();
 
 		newspaper.setArticles(new ArrayList<Article>());
-		newspaper.setCustomers(new ArrayList<Customer>());
 		newspaper.setPrivate(false);
 		final User user = (User) this.actorService.findByPrincipal();
 		newspaper.setPublisher(user);

@@ -32,6 +32,7 @@
 		<value>/views/user/messages</value>
 		
 		<value>/views/agent/messages</value>
+		<value>/views/subscription/messages</value>
 		<value>/views/folder/messages</value>
 		<value>/views/mailMessage/messages</value>
 		<value>/views/advertisement/messages</value>
