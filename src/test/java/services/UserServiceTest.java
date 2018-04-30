@@ -97,7 +97,7 @@ public class UserServiceTest extends AbstractTest {
 
 			},
 
-			//Test #02: Attempt to save an administrator without proper credentials. Expected false.
+			//Test #02: Attempt to save an user without proper credentials. Expected false.
 			{
 				"user1", "testAddress", "testemail@alum.com", "testAdministrator", "testSurname", "+648456571", "editAddress", "editemail@alum.com", "editAdministrator", "editSurname", "+648456521", null, IllegalArgumentException.class
 

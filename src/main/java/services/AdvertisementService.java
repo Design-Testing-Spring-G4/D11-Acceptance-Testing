@@ -13,6 +13,7 @@ import repositories.AdvertisementRepository;
 import domain.Advertisement;
 import domain.Agent;
 import domain.CreditCard;
+import domain.Newspaper;
 import domain.TabooWord;
 
 @Service
@@ -30,14 +31,19 @@ public class AdvertisementService {
 	private ActorService			actorService;
 
 	@Autowired
+	private NewspaperService		newspaperService;
+
+	@Autowired
 	private TabooWordService		tabooWordService;
 
 
 	//Simple CRUD Methods --------------------------------
 
-	public Advertisement create() {
+	public Advertisement create(final int varId) {
 		final Advertisement advertisement = new Advertisement();
-
+		final Newspaper newspaper = this.newspaperService.findOne(varId);
+		Assert.notNull(newspaper);
+		advertisement.setNewspaper(newspaper);
 		final Agent agent = (Agent) this.actorService.findByPrincipal();
 		advertisement.setAgent(agent);
 

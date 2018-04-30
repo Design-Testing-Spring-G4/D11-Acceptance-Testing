@@ -14,19 +14,19 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import utilities.AbstractTest;
-import domain.Administrator;
+import domain.Agent;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
 	"classpath:spring/junit.xml"
 })
 @Transactional
-public class AdministratorServiceTest extends AbstractTest {
+public class AgentServiceTest extends AbstractTest {
 
 	//Service under test
 
 	@Autowired
-	private AdministratorService	administratorService;
+	private AgentService	agentService;
 
 
 	//Test template
@@ -40,39 +40,41 @@ public class AdministratorServiceTest extends AbstractTest {
 
 			//Creation
 
-			final Administrator administrator = this.administratorService.create();
-			administrator.setAddress(address);
-			administrator.setEmail(email);
-			administrator.setName(name);
-			administrator.setSurname(surname);
-			administrator.setPhone(phone);
-			administrator.getUserAccount().setUsername(username2);
-			administrator.getUserAccount().setPassword(username2);
-			final Administrator saved = this.administratorService.save(administrator);
+			final Agent agent = this.agentService.create();
+			agent.setAddress(address);
+			agent.setEmail(email);
+			agent.setName(name);
+			agent.setSurname(surname);
+			agent.setPhone(phone);
+			agent.getUserAccount().setUsername(username2);
+			agent.getUserAccount().setPassword(username2);
+			final Agent saved = this.agentService.save(agent);
 
 			this.unauthenticate();
 			this.authenticate(username2);
 
 			//Listing
-			Collection<Administrator> cl = this.administratorService.findAll();
+
+			Collection<Agent> cl = this.agentService.findAll();
 			Assert.isTrue(cl.contains(saved));
-			Assert.notNull(this.administratorService.findOne(saved.getId()));
+			Assert.notNull(this.agentService.findOne(saved.getId()));
 
 			//Edition
+
 			saved.setAddress(address2);
 			saved.setEmail(email2);
 			saved.setName(name2);
 			saved.setSurname(surname2);
 			saved.setPhone(phone2);
-			final Administrator saved2 = this.administratorService.save(saved);
+			final Agent saved2 = this.agentService.save(saved);
 
 			//Deletion
-			this.administratorService.delete(saved2);
-			cl = this.administratorService.findAll();
+
+			this.agentService.delete(saved2);
+			cl = this.agentService.findAll();
 			Assert.isTrue(!cl.contains(saved));
 
 			this.unauthenticate();
-
 		} catch (final Throwable oops) {
 			System.out.println(oops.getMessage());
 			caught = oops.getClass();
@@ -86,27 +88,26 @@ public class AdministratorServiceTest extends AbstractTest {
 
 	@Test
 	public void Driver() {
-
+		System.out.println("hola");
 		final Object testingData[][] = {
 
 			//Test #01: Correct execution of test. Expected true.
 			{
-				"admin", "testAddress", "testemail@alum.com", "testAdministrator", "testSurname", "+648456571", "editAddress", "editemail@alum.com", "editAdministrator", "editSurname", "+648456521", "admin9", null
+				"agent1", "testAddress", "testemail@alum.com", "testAgent", "testSurname", "+648456571", "editAddress", "editemail@alum.com", "editAgent", "editSurname", "+648456521", "user9", null
 
 			},
 
-			//Test #02: Attempt to save an administrator without proper credentials. Expected false.
+			//Test #02: Attempt to save an user without proper credentials. Expected false.
 			{
-				"admin", "testAddress", "testemail@alum.com", "testAdministrator", "testSurname", "+648456571", "editAddress", "editemail@alum.com", "editAdministrator", "editSurname", "+648456521", null, IllegalArgumentException.class
+				"agent1", "testAddress", "testemail@alum.com", "testAgent", "testSurname", "+648456571", "editAddress", "editemail@alum.com", "editAgent", "editSurname", "+648456521", null, IllegalArgumentException.class
 
 			},
 
-			//Test #03: Attempt to create an administrator without email. Expected false.
+			//Test #03: Attempt to create an user without email. Expected false.
 			{
-				"admin", "testAddress", "", "testAdministrator", "testSurname", "+648456571", "editAddress", "editemail@alum.com", "editAdministrator", "editSurname", "+648456521", null, ConstraintViolationException.class
+				"agent1", "testAddress", "", "testAgent", "testSurname", "+648456571", "editAddress", "editemail@alum.com", "editAgent", "editSurname", "+648456521", null, ConstraintViolationException.class
 
 			}
-
 		};
 
 		for (int i = 0; i < testingData.length; i++)
