@@ -50,10 +50,4 @@ public interface NewspaperRepository extends JpaRepository<Newspaper, Integer> {
 
 	@Query("select n from Newspaper n join n.articles a where a.id = ?1")
 	Newspaper newspapersWhoContainsArticle(int id);
-
-	@Query("select n from Newspaper n where n.advertisements is not empty")
-	Collection<Newspaper> findWithAds();
-
-	@Query("select n from Newspaper n where n.advertisements is empty")
-	Collection<Newspaper> findWithoutAds();
 }

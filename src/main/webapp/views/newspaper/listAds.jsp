@@ -24,60 +24,45 @@
 
 <%-- Stored message variables --%>
 
-<spring:message code="article.title" var="title" />
-<spring:message code="article.writer" var="writer" />
-<spring:message code="article.moment" var="moment" />
-<spring:message code="article.summary" var="summary" />
-<spring:message code="article.body" var="body" />
-<spring:message code="article.finalMode" var="finalMode" />
-<spring:message code="article.display" var="display" />
-<spring:message code="article.create" var="msgCreate" />
-<spring:message code="article.delete" var="msgDelete" />
-<spring:message code="article.dateInt" var="formatDate" />
+<spring:message code="newspaper.title" var="title" />
+<spring:message code="newspaper.publisher" var="publisher" />
+<spring:message code="newspaper.publicationDate" var="publicationDate" />
+<spring:message code="newspaper.description" var="description" />
+<spring:message code="newspaper.isPrivate" var="isPrivate" />
+<spring:message code="newspaper.display" var="display" />
 
-
-<security:authorize access="permitAll()">
+<security:authorize access="hasRole('AGENT')">
 
 	<%-- Listing grid --%>
 
 	<display:table pagesize="5" class="displaytag" keepStatus="false"
-		name="articles" requestURI="${requestURI}" id="row">
+		name="newspapers" requestURI="${requestURI}" id="row">
 
 		<%-- Attributes --%>
 
 		<display:column property="title" title="${title}" />
 
-		<display:column property="writer.name"
-			title="${writer}" sortable="true" />
+		<display:column property="publisher.userAccount.username"
+			title="${publisher}" />
 
-		<display:column title="${moment}" sortable="true">
-			<fmt:formatDate value="${row.moment}" pattern="${formatDate}" />
+		<display:column title="${publicationDate}">
+			<fmt:formatDate value="${row.publicationDate}"
+				pattern="${formatDate}" />
 		</display:column>
 
-		<display:column property="summary" title="${summary}" maxLength="120" />
+		<display:column property="description" title="${description}" />
 
-		<display:column property="finalMode" title="${finalMode}"
-			sortable="true" />
+		<display:column property="isPrivate" title="${isPrivate}" />
 
 		<%-- Links towards edition, display and others --%>
 
-		<spring:url var="displayUrl" value="article/display.do">
+		<spring:url var="displayUrl" value="newspaper/display.do">
 			<spring:param name="varId" value="${row.id}" />
 		</spring:url>
 
 		<display:column>
 			<a href="${displayUrl}"><jstl:out value="${display}" /></a>
 		</display:column>
-
-		<security:authorize access="hasRole('ADMIN')">
-			<spring:url var="deleteUrl" value="article/user/delete.do">
-				<spring:param name="varId" value="${row.id}" />
-			</spring:url>
-
-			<display:column>
-				<a href="${deleteUrl}"><jstl:out value="${msgDelete}" /></a>
-			</display:column>
-		</security:authorize>
 
 	</display:table>
 

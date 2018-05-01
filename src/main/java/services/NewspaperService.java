@@ -133,12 +133,4 @@ public class NewspaperService {
 	public Double ratioNewspapersWithAd() {
 		return this.newspaperRepository.ratioNewspapersWithAd();
 	}
-
-	public Collection<Newspaper> findWithAds() {
-		return this.newspaperRepository.findWithAds();
-	}
-
-	public Collection<Newspaper> findWithoutAds() {
-		return this.newspaperRepository.findWithoutAds();
-	}
 }

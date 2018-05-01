@@ -51,13 +51,13 @@ public class SubscriptionCustomerController extends AbstractController {
 		ModelAndView result;
 
 		if (binding.hasErrors())
-			result = new ModelAndView("redirect:/volume/list.do");
+			result = this.createEditModelAndView(subscription, "subscription.commit.error");
 		else
 			try {
 				this.subscriptionService.saveVolume(subscription);
 				result = new ModelAndView("redirect:/volume/list.do");
 			} catch (final Throwable oops) {
-				result = new ModelAndView("redirect:/volume/list.do");
+				result = this.createEditModelAndView(subscription, "subscription.commit.error");
 			}
 		return result;
 	}

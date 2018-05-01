@@ -64,7 +64,7 @@
 			<spring:param name="varId" value="${row.id}" />
 		</spring:url>
 
-		<display:column>
+		<display:column title="${articleTitle}">
 			<jstl:choose>
 				<jstl:when test="${newspaper.isPrivate eq true}">
 					<security:authorize access="hasRole('CUSTOMER')">
@@ -84,7 +84,7 @@
 			<spring:param name="varId" value="${row.writer.id}" />
 		</spring:url>
 
-		<display:column>
+		<display:column title="${articleWriter}">
 			<a href="${writerUrl}"><jstl:out value="${row.writer.name}" /></a>
 		</display:column>
 
@@ -93,6 +93,6 @@
 
 	</display:table>
 
-	<a href="newspaper/list.do"><jstl:out value="${msgReturn}" /></a>
+	<a href="newspaper/listPublished.do"><jstl:out value="${msgReturn}" /></a>
 
 </security:authorize>

@@ -37,7 +37,6 @@
 		<form:hidden path="version" />
 		<form:hidden path="publisher" />
 		<form:hidden path="newspapers" />
-		<form:hidden path="subscriptions" />
 
 		<form:label path="title">
 			<jstl:out value="${title}" />:</form:label>
@@ -61,7 +60,7 @@
 		<input type="submit" name="save" value="${save}">
 
 		<input type="button" name="cancel" value="${cancel}"
-			onclick="javascript: relativeRedir('newspaper/user/list.do');" />
+			onclick="javascript: relativeRedir('volume/list.do');" />
 
 	</form:form>
 

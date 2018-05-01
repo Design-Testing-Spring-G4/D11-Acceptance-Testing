@@ -2,6 +2,7 @@
 package services;
 
 import java.util.Collection;
+import java.util.Set;
 
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,6 @@ import repositories.AdvertisementRepository;
 import domain.Advertisement;
 import domain.Agent;
 import domain.CreditCard;
-import domain.Newspaper;
 import domain.TabooWord;
 
 @Service
@@ -31,19 +31,14 @@ public class AdvertisementService {
 	private ActorService			actorService;
 
 	@Autowired
-	private NewspaperService		newspaperService;
-
-	@Autowired
 	private TabooWordService		tabooWordService;
 
 
 	//Simple CRUD Methods --------------------------------
 
-	public Advertisement create(final int varId) {
+	public Advertisement create() {
 		final Advertisement advertisement = new Advertisement();
-		final Newspaper newspaper = this.newspaperService.findOne(varId);
-		Assert.notNull(newspaper);
-		advertisement.setNewspaper(newspaper);
+
 		final Agent agent = (Agent) this.actorService.findByPrincipal();
 		advertisement.setAgent(agent);
 
@@ -102,5 +97,13 @@ public class AdvertisementService {
 				count += 1.0;
 
 		return this.advertisementRepository.ratioAdsWithTabooWord(count);
+	}
+
+	public Set<Advertisement> findWithAds(final int id) {
+		return this.advertisementRepository.findWithAds(id);
+	}
+
+	public Set<Advertisement> findWithoutAds(final int id) {
+		return this.advertisementRepository.findWithoutAds(id);
 	}
 }

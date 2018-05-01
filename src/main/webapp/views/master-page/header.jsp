@@ -66,9 +66,9 @@
 					<security:authorize access="hasRole('AGENT')">
 						<li><a href="advertisement/agent/create.do"><spring:message
 									code="master.page.advertisement" /></a></li>
-						<li><a href="newspaper/agent/list.do?varId=0"><spring:message
+						<li><a href="newspaper/agent/listAds.do"><spring:message
 									code="master.page.list.newspaperAgent.with" /></a></li>
-						<li><a href="newspaper/agent/list.do?varId=1"><spring:message
+						<li><a href="newspaper/agent/listNoAds.do"><spring:message
 									code="master.page.list.newspaperAgent.without" /></a></li>
 					</security:authorize>
 					<li><a href="j_spring_security_logout"><spring:message
