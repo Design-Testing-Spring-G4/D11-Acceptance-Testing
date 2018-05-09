@@ -3,8 +3,6 @@ package services;
 
 import java.util.Collection;
 
-import javax.validation.ConstraintViolationException;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,7 +74,6 @@ public class AgentServiceTest extends AbstractTest {
 
 			this.unauthenticate();
 		} catch (final Throwable oops) {
-			System.out.println(oops.getMessage());
 			caught = oops.getClass();
 
 		}
@@ -88,7 +85,6 @@ public class AgentServiceTest extends AbstractTest {
 
 	@Test
 	public void Driver() {
-		System.out.println("hola");
 		final Object testingData[][] = {
 
 			//Test #01: Correct execution of test. Expected true.
@@ -105,7 +101,7 @@ public class AgentServiceTest extends AbstractTest {
 
 			//Test #03: Attempt to create an user without email. Expected false.
 			{
-				"agent1", "testAddress", "", "testAgent", "testSurname", "+648456571", "editAddress", "editemail@alum.com", "editAgent", "editSurname", "+648456521", null, ConstraintViolationException.class
+				"agent1", "testAddress", "", "testAgent", "testSurname", "+648456571", "editAddress", "editemail@alum.com", "editAgent", "editSurname", "+648456521", null, IllegalArgumentException.class
 
 			}
 		};

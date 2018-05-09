@@ -15,17 +15,7 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
-
-<%-- Stored message variables --%>
-
-<spring:message code="folder.create" var="create" />
-<spring:message code="folder.edit" var="edit" />
-<spring:message code="folder.name" var="name" />
-<spring:message code="folder.parent" var="parent" />
-<spring:message code="folder.save" var="save" />
-<spring:message code="folder.delete" var="delete" />
-<spring:message code="folder.confirm.delete" var="confirm" />
-<spring:message code="folder.cancel" var="cancel" />
+<%@taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
 <security:authorize access="isAuthenticated()">
 
@@ -34,49 +24,17 @@
 	<%-- Forms --%>
 	
 	<form:hidden path="id" />
-	<form:hidden path="version" />
-	<form:hidden path="system" />
-	<form:hidden path="mailMessage" />
-	<form:hidden path="actor" />
-	<form:hidden path="children" />
 	
-	<form:label path="name">
-		<jstl:out value="${name}" />:
-	</form:label>
-			<form:input path="name" />
-			<form:errors cssClass="error" path="name" />
-	<br />
+	<acme:textbox path="name" code="folder.name" />
+	<br/>
+	<acme:select path="parent" code="folder.parent" items="${folders}" itemLabel="name" />
+	<br/>
 	
-	<form:label path="parent">
-		<jstl:out value="${parent}" />:
-	</form:label>
-			<form:select path="parent" >
-				<form:option
-					label="----"
-					value="0" />
-				<form:options 
-					items="${folders}" 
-					itemLabel="name"
-					itemValue="id" />
-			</form:select>
-			<form:errors cssClass="error" path="parent" />
-	<br/>
-	<br/>
 	<%-- Buttons --%>
-
-	<input type="submit" name="save"
-		value="${save}" />&nbsp; 
-
-		
-	<jstl:if test="${folder.id!=0}">
-		<input type="submit" name="delete"
-			value="${delete}"
-			onclick="return confirm('${confirm}')" />&nbsp;
-	</jstl:if>	
 	
-	<input type="button" name="cancel"
-		value="${cancel}"
-		onclick="javascript: relativeRedir('folder/list.do');" />
+	<acme:submit name="save" code="folder.save" />
+	<acme:cancel code="folder.cancel" url="folder/list.do" />
+
 </form:form>
 
 </security:authorize>

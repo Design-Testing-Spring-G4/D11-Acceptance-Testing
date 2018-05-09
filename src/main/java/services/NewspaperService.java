@@ -10,8 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.NewspaperRepository;
+import domain.Advertisement;
 import domain.Article;
 import domain.Newspaper;
 import domain.User;
@@ -30,6 +33,9 @@ public class NewspaperService {
 	@Autowired
 	private ActorService		actorService;
 
+	@Autowired
+	private Validator			validator;
+
 
 	//Simple CRUD Methods --------------------------------
 
@@ -40,6 +46,7 @@ public class NewspaperService {
 		newspaper.setPrivate(false);
 		final User user = (User) this.actorService.findByPrincipal();
 		newspaper.setPublisher(user);
+		newspaper.setAdvertisements(new ArrayList<Advertisement>());
 
 		return newspaper;
 	}
@@ -82,6 +89,20 @@ public class NewspaperService {
 	}
 
 	//Other methods
+
+	public Newspaper reconstruct(final Newspaper newspaper, final BindingResult binding) {
+		final Newspaper result = this.create();
+
+		result.setTitle(newspaper.getTitle());
+		result.setPublicationDate(newspaper.getPublicationDate());
+		result.setDescription(newspaper.getDescription());
+		result.setPicture(newspaper.getPicture());
+		result.setPrivate(newspaper.getIsPrivate());
+
+		this.validator.validate(result, binding);
+
+		return result;
+	}
 
 	public Collection<Newspaper> findByKeyword(final String word) {
 		final Collection<Newspaper> res = new ArrayList<Newspaper>();

@@ -3,8 +3,6 @@ package controllers.user;
 
 import java.util.Collection;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -77,8 +75,9 @@ public class NewspaperUserController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(@Valid final Newspaper newspaper, final BindingResult binding) {
+	public ModelAndView save(final Newspaper n, final BindingResult binding) {
 		ModelAndView result;
+		final Newspaper newspaper = this.newspaperService.reconstruct(n, binding);
 
 		if (binding.hasErrors())
 			result = this.createEditModelAndView(newspaper);

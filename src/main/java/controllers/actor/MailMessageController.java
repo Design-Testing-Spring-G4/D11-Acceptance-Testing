@@ -3,8 +3,6 @@ package controllers.actor;
 
 import java.util.Collection;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -88,8 +86,9 @@ public class MailMessageController extends AbstractController {
 	//Sending
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(@Valid final MailMessage mailMessage, final BindingResult binding) {
+	public ModelAndView save(final MailMessage mm, final BindingResult binding) {
 		ModelAndView result;
+		final MailMessage mailMessage = this.mailMessageService.reconstruct(mm, binding);
 		final Folder folder = this.folderService.getSystemFolderByName(mailMessage.getSender().getId(), "out box");
 
 		try {

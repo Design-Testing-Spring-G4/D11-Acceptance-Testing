@@ -19,12 +19,13 @@
 <%@taglib prefix="security"	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
 <%-- Stored message variables --%>
 
 <spring:message code="mailMessage.sent" var="sent" />
-<spring:message code="mailMessage.sender" var="sender" />
-<spring:message code="mailMessage.receiver" var="receiver" />
+
+
 <spring:message code="mailMessage.priority" var="priority" />
 <spring:message code="mailMessage.subject" var="subject" />
 <spring:message code="mailMessage.body" var="body" />
@@ -37,26 +38,16 @@
 	<jstl:out value="${sent}" />:
 	<fmt:formatDate value="${mailMessage.sent}" type="BOTH"/>
 	<br />
-	
-	<jstl:out value="${sender}" />:
-	<jstl:out value="${mailMessage.sender.name}" />&nbsp;<jstl:out value="${mailMessage.sender.surname}" />
-	<br />
-		
-	<jstl:out value="${receiver}" />:
-	<jstl:out value="${mailMessage.receiver.name}" />&nbsp;<jstl:out value="${mailMessage.receiver.surname}" />
-	<br />
-	
-	<jstl:out value="${priority}" />:
-	<jstl:out value="${mailMessage.priority}" />
-	<br />
-	
-	<jstl:out value="${subject}" />:
-	<jstl:out value="${mailMessage.subject}" />
-	<br />
-	
-	<jstl:out value="${body}" />:
-	<jstl:out value="${mailMessage.body}" />
-	<br /><br />
+	<acme:displayField path="mailMessage.sender.name" code="mailMessage.sender"/>
+	<br/>
+	<acme:displayField path="mailMessage.receiver.name" code="mailMessage.receiver"/>
+	<br/>
+	<acme:displayField path="mailMessage.priority" code="mailMessage.priority"/>
+	<br/>
+	<acme:displayField path="mailMessage.subject" code="mailMessage.subject"/>
+	<br/>
+	<acme:displayField path="mailMessage.body" code="mailMessage.body"/>
+	<br/>
 
 	<spring:url var="returnUrl"
 		value="mailMessage/list.do">

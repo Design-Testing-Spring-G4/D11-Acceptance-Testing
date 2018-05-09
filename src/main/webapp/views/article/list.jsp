@@ -21,6 +21,7 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
 <%-- Stored message variables --%>
 
@@ -30,9 +31,6 @@
 <spring:message code="article.summary" var="summary" />
 <spring:message code="article.body" var="body" />
 <spring:message code="article.finalMode" var="finalMode" />
-<spring:message code="article.display" var="display" />
-<spring:message code="article.create" var="msgCreate" />
-<spring:message code="article.delete" var="msgDelete" />
 <spring:message code="article.dateInt" var="formatDate" />
 
 
@@ -60,23 +58,11 @@
 			sortable="true" />
 
 		<%-- Links towards edition, display and others --%>
-
-		<spring:url var="displayUrl" value="article/display.do">
-			<spring:param name="varId" value="${row.id}" />
-		</spring:url>
-
-		<display:column>
-			<a href="${displayUrl}"><jstl:out value="${display}" /></a>
-		</display:column>
+		
+		<acme:link code="article.display" url="article/display.do" id="${row.id}" />
 
 		<security:authorize access="hasRole('ADMIN')">
-			<spring:url var="deleteUrl" value="article/user/delete.do">
-				<spring:param name="varId" value="${row.id}" />
-			</spring:url>
-
-			<display:column>
-				<a href="${deleteUrl}"><jstl:out value="${msgDelete}" /></a>
-			</display:column>
+			<acme:link code="article.delete" url="article/user/delete.do" id="${row.id}" />
 		</security:authorize>
 
 	</display:table>

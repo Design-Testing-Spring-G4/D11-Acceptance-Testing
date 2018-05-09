@@ -52,7 +52,7 @@ public class Actor extends DomainEntity {
 		return this.surname;
 	}
 
-	@NotBlank
+	@NotNull
 	@Email
 	public String getEmail() {
 		return this.email;
@@ -68,7 +68,7 @@ public class Actor extends DomainEntity {
 		return this.address;
 	}
 
-	@Valid
+	//Validation done via forms
 	@OneToOne(cascade = CascadeType.ALL)
 	public UserAccount getUserAccount() {
 		return this.userAccount;

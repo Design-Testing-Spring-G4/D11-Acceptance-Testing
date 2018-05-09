@@ -21,6 +21,7 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
 <%-- Stored message variables --%>
 
@@ -28,9 +29,6 @@
 <spring:message code="volume.description" var="description" />
 <spring:message code="volume.year" var="year" />
 <spring:message code="volume.publisher" var="publisher" />
-<spring:message code="volume.browse" var="browse" />
-<spring:message code="volume.edit" var="edit" />
-<spring:message code="volume.subscribe" var="subscribe" />
 <spring:message code="volume.create" var="create" />
 
 <security:authorize access="permitAll()">
@@ -52,32 +50,14 @@
 
 		<%-- Links towards edition, display and others --%>
 
-		<spring:url var="browseUrl" value="volume/listNewspapers.do">
-			<spring:param name="varId" value="${row.id}" />
-		</spring:url>
-
-		<display:column>
-			<a href="${browseUrl}"><jstl:out value="${browse}" /></a>
-		</display:column>
+		<acme:link code="volume.browse" url="volume/listNewspapers.do" id="${row.id}" />
 			
 		<security:authorize access="hasRole('USER')">
-			<spring:url var="editUrl" value="volume/user/edit.do">
-				<spring:param name="varId" value="${row.id}" />
-			</spring:url>
-			
-			<display:column>
-				<a href="${editUrl}"><jstl:out value="${edit}" /></a>
-			</display:column>
+			<acme:link code="volume.edit" url="volume/user/edit.do" id="${row.id}" />
 		</security:authorize>
 
 		<security:authorize access="hasRole('CUSTOMER')">
-			<spring:url var="subscribeUrl" value="subscription/customer/create.do">
-				<spring:param name="varId" value="${row.id}" />
-			</spring:url>
-
-			<display:column>
-				<a href="${subscribeUrl}"><jstl:out value="${subscribe}" /></a>
-			</display:column>
+			<acme:link code="volume.subscribe" url="subscription/customer/create.do" id="${row.id}" />
 		</security:authorize>
 
 	</display:table>

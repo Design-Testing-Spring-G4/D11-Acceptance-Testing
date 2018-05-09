@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.FolderRepository;
 import domain.Actor;
@@ -27,6 +29,9 @@ public class FolderService {
 
 	@Autowired
 	private ActorService		actorService;
+
+	@Autowired
+	private Validator			validator;
 
 
 	//Simple CRUD methods
@@ -70,7 +75,8 @@ public class FolderService {
 			actor.getFolders().add(saved);
 			this.actorService.save(actor);
 			saved2 = this.folderRepository.save(saved);
-		}
+		} else
+			saved2 = this.folderRepository.save(saved);
 		return saved2;
 	}
 
@@ -119,6 +125,26 @@ public class FolderService {
 		//	this.save(cf);
 		return cf;
 	}
+
+	public Folder reconstruct(final Folder folder, final BindingResult binding) {
+		Folder result;
+		final Actor actor = this.actorService.findByPrincipal();
+
+		if (folder.getId() == 0) {
+			result = this.create(actor);
+			result.setName(folder.getName());
+			result.setParent(folder.getParent());
+		} else {
+			result = this.findOne(folder.getId());
+			result.setName(folder.getName());
+			result.setParent(folder.getParent());
+		}
+
+		this.validator.validate(result, binding);
+
+		return result;
+	}
+
 	public Folder getFolderByName(final int id, final String name) {
 		Assert.notNull(id);
 		Assert.notNull(name);

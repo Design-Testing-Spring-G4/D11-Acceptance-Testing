@@ -20,13 +20,14 @@
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
 <%-- Stored message variables --%>
 
 <spring:message code="mailMessage.sent" var="sent" />
 <spring:message code="mailMessage.priority" var="priority" />
-<spring:message code="mailMessage.receiver" var="receiver" />
 <spring:message code="mailMessage.subject" var="subject" />
+
 <spring:message code="mailMessage.display" var="display" />
 <spring:message code="mailMessage.move" var="move" />
 <spring:message code="mailMessage.delete" var="delete" />
@@ -51,29 +52,9 @@
 
 	<%-- Links towards display, apply, edit and cancel views --%>
 
-	<spring:url var="displayUrl" value="mailMessage/display.do">
-		<spring:param name="varId" value="${row.id}" />
-	</spring:url>
-
-	<display:column>
-		<a href="${displayUrl}"><jstl:out value="${display}" /></a>
-	</display:column>
-	
-	<spring:url var="moveUrl" value="mailMessage/edit.do">
-		<spring:param name="varId" value="${row.id}" />
-	</spring:url>
-	
-	<display:column>
-		<a href="${moveUrl}"><jstl:out value="${move}" /></a>
-	</display:column>
-	
-	<spring:url var="deleteUrl" value="mailMessage/delete.do">
-		<spring:param name="varId" value="${row.id}" />
-	</spring:url>
-	
-	<display:column>
-		<a href="${deleteUrl}"><jstl:out value="${delete}" /></a>
-	</display:column>
+	<acme:link code="mailMessage.display" url="mailMessage/display.do" id="${row.id}" />
+	<acme:link code="mailMessage.move" url="mailMessage/edit.do" id="${row.id}" />
+	<acme:link code="mailMessage.delete" url="mailMessage/delete.do" id="${row.id}" />
 	
 </display:table>
 

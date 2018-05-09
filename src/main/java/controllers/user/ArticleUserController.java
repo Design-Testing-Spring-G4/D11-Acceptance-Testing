@@ -63,13 +63,15 @@ public class ArticleUserController extends AbstractController {
 	public ModelAndView save(@Valid final Article article, final Integer varId, final BindingResult binding) {
 		ModelAndView result;
 
-		if (binding.hasErrors())
+		if (binding.hasErrors()) {
+			System.out.println(binding.toString());
 			result = this.createEditModelAndView(article, varId);
-		else
+		} else
 			try {
 				this.articleService.save(article, varId);
 				result = new ModelAndView("redirect:/newspaper/user/list.do");
 			} catch (final Throwable oops) {
+				System.out.println(oops.getMessage());
 				result = this.createEditModelAndView(article, varId, "article.commit.error");
 			}
 		return result;

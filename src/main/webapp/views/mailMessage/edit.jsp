@@ -16,11 +16,11 @@
 <%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
+<%@taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
 <%-- Stored message variables --%>
 
 <spring:message code="mailMessage.folder.name" var="name" />
-<spring:message code="mailMessage.move" var="move" />
 
 <security:authorize access="isAuthenticated()">
 
@@ -33,13 +33,7 @@
 
 	<%-- Links towards display, apply, edit and cancel views --%>
 	
-	<spring:url var="moveUrl" value="mailMessage/move.do">
-		<spring:param name="varId" value="${row.id}" />
-	</spring:url>
-	
-	<display:column>
-		<a href="${moveUrl}"><jstl:out value="${move}" /></a>
-	</display:column>
+	<acme:link code="mailMessage.move" url="mailMessage/move.do" id="${row.id}"/>
 	
 </display:table>
 

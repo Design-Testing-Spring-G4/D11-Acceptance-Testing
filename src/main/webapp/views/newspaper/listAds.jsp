@@ -21,6 +21,7 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
 <%-- Stored message variables --%>
 
@@ -29,7 +30,6 @@
 <spring:message code="newspaper.publicationDate" var="publicationDate" />
 <spring:message code="newspaper.description" var="description" />
 <spring:message code="newspaper.isPrivate" var="isPrivate" />
-<spring:message code="newspaper.display" var="display" />
 
 <security:authorize access="hasRole('AGENT')">
 
@@ -55,14 +55,8 @@
 		<display:column property="isPrivate" title="${isPrivate}" />
 
 		<%-- Links towards edition, display and others --%>
-
-		<spring:url var="displayUrl" value="newspaper/display.do">
-			<spring:param name="varId" value="${row.id}" />
-		</spring:url>
-
-		<display:column>
-			<a href="${displayUrl}"><jstl:out value="${display}" /></a>
-		</display:column>
+	
+		<acme:link code="newspaper.display" url="newspaper/display.do" id="${row.id}" />
 
 	</display:table>
 

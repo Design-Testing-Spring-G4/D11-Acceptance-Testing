@@ -45,11 +45,12 @@ public class AdvertisementServiceTest extends AbstractTest {
 
 			//Creation
 
-			final Advertisement advertisement = this.advertisementService.create(n.getId());
+			final Advertisement advertisement = this.advertisementService.create();
 			advertisement.setTitle(title);
 			advertisement.setBanner(banner);
 			advertisement.setTarget(target);
 			advertisement.setCreditCard(creditcard);
+			advertisement.setNewspaper(n);
 
 			final Advertisement saved = this.advertisementService.save(advertisement);
 
@@ -66,7 +67,6 @@ public class AdvertisementServiceTest extends AbstractTest {
 
 			this.unauthenticate();
 		} catch (final Throwable oops) {
-			System.out.println(oops.getMessage());
 			caught = oops.getClass();
 
 		}

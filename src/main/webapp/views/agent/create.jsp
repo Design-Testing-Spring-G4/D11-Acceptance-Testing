@@ -16,88 +16,39 @@
 <%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
-
-<%-- Stored message variables --%>
-
-<spring:message code="agent.userAccount.username" var="username" />
-<spring:message code="agent.userAccount.password" var="password" />
-<spring:message code="agent.name" var="name" />
-<spring:message code="agent.surname" var="surname" />
-<spring:message code="agent.email" var="email" />
-<spring:message code="agent.phone" var="phone" />
-<spring:message code="agent.address" var="address" />
-<spring:message code="agent.save" var="save" />
-<spring:message code="agent.cancel" var="cancel" />
+<%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
 <security:authorize access="isAnonymous()">
 
-<form:form id="form" action="${requestURI}" modelAttribute="agent">
+<form:form id="form" action="${requestURI}" modelAttribute="arf">
 
-	<%-- Forms --%>
-	
-	<form:hidden path="id" />
-	<form:hidden path="version" />
-	<form:hidden path="userAccount" />
-	<form:hidden path="userAccount.authorities" />
-	<form:hidden path="advertisements"/>
-	<form:hidden path="folders"/>
-	
-	
-	<form:label path="userAccount.username">
-		<jstl:out value="${username}" />:
+	<acme:textbox code="agent.userAccount.username" path="username"/>
+	<br/>
+	<acme:password code="agent.userAccount.password" path="password"/>
+	<br/>
+	<acme:password code="agent.repeatPassword" path="repeatPassword"/>
+	<br/>
+	<acme:textbox code="agent.name" path="name"/>
+	<br/>
+	<acme:textbox code="agent.surname" path="surname"/>
+	<br/>
+	<acme:textbox code="agent.email" path="email"/>
+	<br/>
+	<acme:textbox code="agent.phone" path="phone" placeholder="345345345"/>
+	<br/>
+	<acme:textbox code="agent.address" path="address"/>
+	<br/>
+
+	<form:label path="acceptedTerms" >
+		<spring:message code="agent.terms.text" />
 	</form:label>
-			<form:input path="userAccount.username" />
-			<form:errors cssClass="error" path="userAccount.username" />
-	<br />
+	<a href="welcome/terms.do" target="_blank"><spring:message code="agent.terms.link" /></a>
+	<form:checkbox path="acceptedTerms" required="required"/>
+	<form:errors path="acceptedTerms" cssClass="error" />
+	<br/>
 	
-	<form:label path="userAccount.password">
-		<jstl:out value="${password}" />:
-	</form:label>
-			<form:password path="userAccount.password" />
-			<form:errors cssClass="error" path="userAccount.password" />
-	<br />
-		
-	<form:label path="name">
-		<jstl:out value="${name}" />:
-	</form:label>
-			<form:input path="name" />
-			<form:errors cssClass="error" path="name" />
-	<br />
-	
-	<form:label path="surname">
-		<jstl:out value="${surname}" />:
-	</form:label>
-			<form:input path="surname" />
-			<form:errors cssClass="error" path="surname" />
-	<br />
-	
-	<form:label path="email">
-		<jstl:out value="${email}" />:
-	</form:label>
-			<form:input path="email" placeholder="mail@mail.com"/>
-			<form:errors cssClass="error" path="email" />
-	<br />
-	
-	<form:label path="phone">
-		<jstl:out value="${phone}" />:
-	</form:label>
-			<form:input id="phone" path="phone" placeholder="+CC 654654654"/>
-			<form:errors cssClass="error" path="phone" />
-	<br />
-	
-	<form:label path="address">
-		<jstl:out value="${address}" />:
-	</form:label>
-			<form:input path="address" />
-			<form:errors cssClass="error" path="address" />
-	<br />
-	
-	
-	<%-- Buttons --%>
-	<input type="submit" name="save" value="${save}" /> 
-	
-	<input type="button" name="cancel" value="${cancel}"
-		onclick="javascript: relativeRedir('welcome/index.do');" />
+	<acme:submit name="save" code="agent.save"/>
+	<acme:cancel code="agent.cancel" url="welcome/index.do"/>
 		
 </form:form>
 </security:authorize>

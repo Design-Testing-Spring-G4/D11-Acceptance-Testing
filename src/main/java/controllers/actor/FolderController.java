@@ -3,8 +3,6 @@ package controllers.actor;
 
 import java.util.Collection;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -50,12 +48,12 @@ public class FolderController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/childrenList", method = RequestMethod.GET)
-	public ModelAndView childrenList(@RequestParam final int folderId) {
+	public ModelAndView childrenList(@RequestParam final int varId) {
 		final ModelAndView result;
 		Collection<Folder> folders;
 		Folder folder;
 
-		folder = this.folderService.findOne(folderId);
+		folder = this.folderService.findOne(varId);
 		folders = folder.getChildren();
 
 		result = new ModelAndView("folder/childrenList");
@@ -83,11 +81,11 @@ public class FolderController extends AbstractController {
 	//Edition
 
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public ModelAndView edit(@RequestParam final int folderId) {
+	public ModelAndView edit(@RequestParam final int varId) {
 		final ModelAndView result;
 		Folder folder;
 
-		folder = this.folderService.findOne(folderId);
+		folder = this.folderService.findOne(varId);
 		Assert.notNull(folder);
 		result = this.createEditModelAndView(folder);
 
@@ -95,8 +93,9 @@ public class FolderController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(@Valid final Folder folder, final BindingResult binding) {
+	public ModelAndView save(final Folder f, final BindingResult binding) {
 		ModelAndView result;
+		final Folder folder = this.folderService.reconstruct(f, binding);
 
 		if (binding.hasErrors())
 			result = this.createEditModelAndView(folder);
@@ -110,39 +109,20 @@ public class FolderController extends AbstractController {
 		return result;
 	}
 
-	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
-	public ModelAndView delete(final Folder folder, final BindingResult binding) {
-		ModelAndView result;
-
-		try {
-			this.folderService.delete(folder);
-			result = new ModelAndView("redirect:list.do");
-		} catch (final Throwable oops) {
-			result = this.createEditModelAndView(folder, "folder.commit.error");
-		}
-		return result;
-	}
-
 	//Delete
 
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
-	public ModelAndView delete(@RequestParam final int folderId) {
+	public ModelAndView delete(@RequestParam final int varId) {
 		final ModelAndView result;
-		Collection<Folder> folders;
-		Folder folder;
-		result = new ModelAndView("folder/list");
-		folders = this.actorService.findByPrincipal().getFolders();
+		final Folder folder = this.folderService.findOne(varId);
 
-		folder = this.folderService.findOne(folderId);
 		if (!folder.getChildren().isEmpty())
-			result.addObject("message", "folder.delete.error");
+			result = new ModelAndView("redirect:list.do");
 		else {
 			this.folderService.delete(folder);
-			folders = this.actorService.findByPrincipal().getFolders();
-		}
 
-		result.addObject("folders", folders);
-		result.addObject("requestURI", "folder/list.do");
+			result = new ModelAndView("redirect:list.do");
+		}
 
 		return result;
 	}

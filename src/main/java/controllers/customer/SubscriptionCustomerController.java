@@ -1,8 +1,6 @@
 
 package controllers.customer;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -47,8 +45,9 @@ public class SubscriptionCustomerController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(@Valid final Subscription subscription, final BindingResult binding) {
+	public ModelAndView save(final Subscription s, final BindingResult binding) {
 		ModelAndView result;
+		final Subscription subscription = this.subscriptionService.reconstruct(s, binding);
 
 		if (binding.hasErrors())
 			result = this.createEditModelAndView(subscription, "subscription.commit.error");

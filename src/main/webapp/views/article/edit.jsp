@@ -18,78 +18,50 @@
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
+<%@taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
 <%-- Stored message variables --%>
 
-<spring:message code="article.title" var="msgTitle" />
-<spring:message code="article.summary" var="msgSummary" />
-<spring:message code="article.body" var="msgBody" />
-<spring:message code="article.pictures" var="msgPictures" />
 <spring:message code="article.finalMode" var="msgFinalMode" />
-<spring:message code="article.save" var="msgSave" />
-<spring:message code="article.cancel" var="msgCancel" />
 
-
-<security:authorize access="isAuthenticated()">
+<security:authorize access="hasRole('USER')">
 
 	<form:form action="${requestURI}" modelAttribute="article">
 
 		<%-- Form fields --%>
+		
+		<form:hidden path="id"/>
+		<form:hidden path="version"/>
+		<form:hidden path="writer"/>
+		<form:hidden path="followups"/>
+		<form:hidden path="moment"/>
+		
+		<acme:textarea path="title" code="article.title" />
+		<br/>
+		<br/>
+		<acme:textarea path="summary" code="article.summary" />
+		<br/>
+		<br/>
+		<acme:textarea path="body" code="article.body" />
+		<br/>
+		<br/>
+		<acme:textarea path="pictures" code="article.pictures" />
+		<br/>
+		<br/>
+			
+		<form:label path="finalMode">
+			<jstl:out value="${msgFinalMode}" />:</form:label>
+		<form:select path="finalMode">
+			<form:option label="NO" value="false" />
+			<form:option label="YES" value="true" />
+		</form:select>
+		<br />
+		<br />
 
-		<form:hidden path="id" />
-		<form:hidden path="version" />
-		<form:hidden path="writer" />
-		<form:hidden path="moment" />
-		<form:hidden path="followups" />
-
-		<security:authorize access="hasRole('USER')">
-
-			<form:label path="title">
-				<jstl:out value="${msgTitle}" />:</form:label>
-			<form:textarea path="title" />
-			<form:errors cssClass="error" path="title" />
-			<br />
-			<br />
-
-			<form:label path="summary">
-				<jstl:out value="${msgSummary}" />:</form:label>
-			<form:textarea path="summary" />
-			<form:errors cssClass="error" path="summary" />
-			<br />
-			<br />
-
-			<form:label path="body">
-				<jstl:out value="${msgBody}" />:</form:label>
-			<form:textarea path="body" />
-			<form:errors cssClass="error" path="body" />
-			<br />
-			<br />
-
-			<form:label path="pictures">
-				<jstl:out value="${msgPictures}" />:</form:label>
-			<form:textarea path="pictures" />
-			<form:errors cssClass="error" path="pictures" />
-			<br />
-			<br />
-
-			<form:label path="finalMode">
-				<jstl:out value="${msgFinalMode}" />:</form:label>
-			<form:select path="finalMode">
-				<form:option label="NO" value="false" />
-				<form:option label="YES" value="true" />
-			</form:select>
-			<br />
-			<br />
-
-
-
-			<%-- Buttons --%>
-			<input type="submit" name="save" value="${msgSave}">
-
-			<input type="button" name="cancel" value="${msgCancel}"
-				onclick="javascript: relativeRedir('newspaper/user/list.do');" />
-
-		</security:authorize>
+		<%-- Buttons --%>
+		
+		<acme:submit name="save" code="article.save" />
+		<acme:cancel code="article.cancel" url="newspaper/user/list.do" />
 
 	</form:form>
 

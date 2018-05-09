@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.AdvertisementRepository;
 import domain.Advertisement;
@@ -32,6 +34,9 @@ public class AdvertisementService {
 
 	@Autowired
 	private TabooWordService		tabooWordService;
+
+	@Autowired
+	private Validator				validator;
 
 
 	//Simple CRUD Methods --------------------------------
@@ -78,7 +83,7 @@ public class AdvertisementService {
 		this.advertisementRepository.delete(advertisement);
 	}
 
-	//Other methods
+	//Ancillary methods
 
 	public boolean isTaboo(final Advertisement a) {
 		boolean res = false;
@@ -87,6 +92,25 @@ public class AdvertisementService {
 				res = true;
 
 		return res;
+	}
+
+	public Advertisement reconstruct(final Advertisement advertisement, final BindingResult binding) {
+		Advertisement result;
+		final Agent agent = (Agent) this.actorService.findByPrincipal();
+
+		result = this.create();
+		result.setTitle(advertisement.getTitle());
+		result.setAgent(agent);
+		result.setBanner(advertisement.getBanner());
+		result.setCreditCard(advertisement.getCreditCard());
+		result.setNewspaper(advertisement.getNewspaper());
+		result.setTarget(advertisement.getTarget());
+		result.setId(advertisement.getId());
+		result.setVersion(advertisement.getVersion());
+
+		this.validator.validate(result, binding);
+
+		return result;
 	}
 
 	public Double ratioAdsWithTabooWord() {

@@ -20,7 +20,7 @@
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
 <%-- Stored message variables --%>
 
@@ -46,14 +46,9 @@
 		<display:column property="target" title="${target}" />
 
 		<%-- Links towards edition, display and others --%>
-
-		<spring:url var="deleteUrl" value="advertisement/administrator/delete.do">
-			<spring:param name="varId" value="${row.id}" />
-		</spring:url>
-
-		<display:column>
-			<a href="${deleteUrl}"><jstl:out value="${delete}" /></a>
-		</display:column>
+		
+		<acme:link code="advertisement.delete" url="advertisement/administrator/delete.do"
+			id="${row.id}" />
 
 	</display:table>
 </security:authorize>

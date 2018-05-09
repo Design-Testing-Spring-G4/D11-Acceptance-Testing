@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import utilities.AbstractTest;
-import domain.Folder;
 import domain.MailMessage;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -44,43 +43,35 @@ public class MailMessageServiceTest extends AbstractTest {
 		try {
 			this.authenticate(username);
 
-			final Folder folder = this.folderService.create(this.actorService.findByPrincipal());
-			folder.setName("testFolder");
-			final Folder savedFolder = this.folderService.save(folder);
-
 			//Creation
 
 			final MailMessage message = this.mailMessageService.create();
 			message.setSubject(subject);
 			message.setBody(body);
-			message.setFolder(savedFolder);
+			message.setReceiver(this.actorService.findOne(this.getEntityId("admin1")));
+			message.setFolder(this.folderService.findOne(this.getEntityId("inbox4")));
 
 			final MailMessage saved = this.mailMessageService.save(message);
 
 			//Listing
 
-			Collection<MailMessage> cl = this.mailMessageService.findAll();
+			final Collection<MailMessage> cl = this.mailMessageService.findAll();
 			Assert.isTrue(cl.contains(saved));
 			Assert.notNull(this.mailMessageService.findOne(saved.getId()));
-
-			//Edition
 
 			//Deletion
 
 			this.mailMessageService.delete(saved);
-			cl = this.mailMessageService.findAll();
 
 			this.unauthenticate();
 
 		} catch (final Throwable oops) {
-			System.out.println(oops.getMessage());
 			caught = oops.getClass();
 
 		}
 
 		this.checkExceptions(expected, caught);
 	}
-
 	@Test
 	public void Driver() {
 
@@ -89,7 +80,6 @@ public class MailMessageServiceTest extends AbstractTest {
 			//Test #01: Correct execution of test. Expected true.
 			{
 				"user1", "testMail", "testSubject", null
-
 			},
 
 			//Test #02:  Attempt to execute the test by anonymous user. Expected false.
@@ -97,15 +87,14 @@ public class MailMessageServiceTest extends AbstractTest {
 				null, "testMail", "testSubject", IllegalArgumentException.class
 			},
 
-			//Test #03: Attempt to create an volume with blank subject. Expected false.
+			//Test #03: Attempt to create a message with null subject. Expected false.
 			{
-				"user1", "", "testSubject", ConstraintViolationException.class
+				"user1", null, "testSubject", ConstraintViolationException.class
 			},
 
-			//Test #04: Attempt to create an volume with blank body. Expected false.
+			//Test #04: Attempt to create a message with null body. Expected false.
 			{
-				"user1", "testMail", "", ConstraintViolationException.class
-
+				"user1", "testMail", null, ConstraintViolationException.class
 			}
 		};
 

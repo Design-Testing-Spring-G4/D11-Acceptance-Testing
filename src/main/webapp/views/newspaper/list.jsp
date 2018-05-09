@@ -21,6 +21,7 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
 <%-- Stored message variables --%>
 
@@ -29,11 +30,7 @@
 <spring:message code="newspaper.publicationDate" var="publicationDate" />
 <spring:message code="newspaper.description" var="description" />
 <spring:message code="newspaper.isPrivate" var="isPrivate" />
-<spring:message code="newspaper.display" var="display" />
-<spring:message code="newspaper.create" var="msgCreate" />
 <spring:message code="newspaper.dateInt" var="formatDate" />
-<spring:message code="acrticle.create" var="msgCreateArticle" />
-<spring:message code="newspaper.delete" var="msgDeleteNewspaper" />
 
 <security:authorize access="permitAll()">
 
@@ -50,8 +47,7 @@
 			title="${publisher}" />
 
 		<display:column title="${publicationDate}">
-			<fmt:formatDate value="${row.publicationDate}"
-				pattern="${formatDate}" />
+			<fmt:formatDate value="${row.publicationDate}" pattern="${formatDate}" />
 		</display:column>
 
 		<display:column property="description" title="${description}" />
@@ -59,41 +55,21 @@
 		<display:column property="isPrivate" title="${isPrivate}" />
 
 		<%-- Links towards edition, display and others --%>
-
-		<spring:url var="displayUrl" value="newspaper/display.do">
-			<spring:param name="varId" value="${row.id}" />
-		</spring:url>
-
-		<display:column>
-			<a href="${displayUrl}"><jstl:out value="${display}" /></a>
-		</display:column>
-
+		
+		<acme:link code="newspaper.display" url="newspaper/display.do" id="${row.id}"/>
 
 		<security:authorize access="hasRole('ADMIN')">
-			<spring:url var="deleteUrl" value="newspaper/user/delete.do">
-				<spring:param name="varId" value="${row.id}" />
-			</spring:url>
-
-			<display:column>
-				<a href="${deleteUrl}"><jstl:out value="${msgDeleteNewspaper}" /></a>
-			</display:column>
+			<acme:link code="newspaper.delete" url="newspaper/user/delete.do" id="${row.id}"/>
 		</security:authorize>
 		
 		<jstl:if test="${forCreate == true}">
-			<spring:url var="createArticle" value="article/user/create.do">
-				<spring:param name="varId" value="${row.id}" />
-			</spring:url>
-
-			<display:column>
-				<a href="${createArticle}"><jstl:out value="${msgCreateArticle}" /></a>
-			</display:column>
+			<acme:link code="article.create" url="article/user/create.do" id="${row.id}"/>
 		</jstl:if>
 
 	</display:table>
 
 	<security:authorize access="hasRole('USER')">
-		<spring:url var="createUrl" value="newspaper/user/create.do" />
-		<a href="${createUrl}"><jstl:out value="${msgCreate}" /></a>
+		<acme:link code="newspaper.create" url="newspaper/user/create.do" />
 	</security:authorize>
 
 </security:authorize>

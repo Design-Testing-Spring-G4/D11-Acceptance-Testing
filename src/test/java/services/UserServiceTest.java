@@ -3,8 +3,6 @@ package services;
 
 import java.util.Collection;
 
-import javax.validation.ConstraintViolationException;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,7 +74,6 @@ public class UserServiceTest extends AbstractTest {
 
 			this.unauthenticate();
 		} catch (final Throwable oops) {
-
 			caught = oops.getClass();
 
 		}
@@ -105,7 +102,7 @@ public class UserServiceTest extends AbstractTest {
 
 			//Test #03: Attempt to create an user without email. Expected false.
 			{
-				"user1", "testAddress", "", "testAdministrator", "testSurname", "+648456571", "editAddress", "editemail@alum.com", "editAdministrator", "editSurname", "+648456521", null, ConstraintViolationException.class
+				"user1", "testAddress", "", "testAdministrator", "testSurname", "+648456571", "editAddress", "editemail@alum.com", "editAdministrator", "editSurname", "+648456521", null, IllegalArgumentException.class
 
 			}
 		};

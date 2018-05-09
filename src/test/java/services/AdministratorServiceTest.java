@@ -3,8 +3,6 @@ package services;
 
 import java.util.Collection;
 
-import javax.validation.ConstraintViolationException;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,7 +72,6 @@ public class AdministratorServiceTest extends AbstractTest {
 			this.unauthenticate();
 
 		} catch (final Throwable oops) {
-			System.out.println(oops.getMessage());
 			caught = oops.getClass();
 
 		}
@@ -103,7 +100,7 @@ public class AdministratorServiceTest extends AbstractTest {
 
 			//Test #03: Attempt to create an administrator without email. Expected false.
 			{
-				"admin", "testAddress", "", "testAdministrator", "testSurname", "+648456571", "editAddress", "editemail@alum.com", "editAdministrator", "editSurname", "+648456521", null, ConstraintViolationException.class
+				"admin", "testAddress", "", "testAdministrator", "testSurname", "+648456571", "editAddress", "editemail@alum.com", "editAdministrator", "editSurname", "+648456521", null, IllegalArgumentException.class
 
 			}
 

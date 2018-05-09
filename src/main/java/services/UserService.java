@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.UserRepository;
 import security.Authority;
@@ -18,6 +20,8 @@ import domain.Chirp;
 import domain.Folder;
 import domain.Newspaper;
 import domain.User;
+import domain.Volume;
+import forms.ActorRegisterForm;
 
 @Service
 @Transactional
@@ -36,6 +40,9 @@ public class UserService {
 	@Autowired
 	private FolderService	folderService;
 
+	@Autowired
+	private Validator		validator;
+
 
 	//Simple CRUD Methods --------------------------------
 
@@ -52,6 +59,7 @@ public class UserService {
 		user.setFollowers(new ArrayList<User>());
 		user.setNewspapers(new ArrayList<Newspaper>());
 		user.setFolders(new ArrayList<Folder>());
+		user.setVolumes(new ArrayList<Volume>());
 
 		return user;
 	}
@@ -94,6 +102,30 @@ public class UserService {
 
 	//Ancillary methods
 
+	public User reconstruct(final ActorRegisterForm arf, final BindingResult binding) {
+		User result;
+		Assert.isTrue(arf.isAcceptedTerms());
+		Assert.isTrue(arf.getPassword().equals(arf.getRepeatPassword()));
+
+		result = this.create();
+		result.getUserAccount().setUsername(arf.getUsername());
+		result.getUserAccount().setPassword(arf.getPassword());
+		result.setName(arf.getName());
+		result.setSurname(arf.getSurname());
+		result.setEmail(arf.getEmail());
+		result.setPhone(arf.getPhone());
+		result.setAddress(arf.getAddress());
+		result.setArticles(new ArrayList<Article>());
+		result.setChirps(new ArrayList<Chirp>());
+		result.setFollowers(new ArrayList<User>());
+		result.setNewspapers(new ArrayList<Newspaper>());
+		result.setFolders(new ArrayList<Folder>());
+
+		this.validator.validate(result, binding);
+
+		return result;
+	}
+
 	public Double[] avgstdNewspapersPerUser() {
 		return this.userRepository.avgstdNewspapersPerUser();
 	}
@@ -125,5 +157,4 @@ public class UserService {
 	public Collection<Article> articlesPublishedPerUser(final int id) {
 		return this.userRepository.articlesPublishedPerUser(id);
 	}
-
 }

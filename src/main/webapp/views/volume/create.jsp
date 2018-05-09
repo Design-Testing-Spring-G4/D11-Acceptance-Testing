@@ -18,14 +18,7 @@
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
-
-<%-- Stored message variables --%>
-
-<spring:message code="volume.title" var="title" />
-<spring:message code="volume.description" var="description" />
-<spring:message code="volume.year" var="year" />
-<spring:message code="volume.save" var="save" />
-<spring:message code="volume.cancel" var="cancel" />
+<%@taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
 <security:authorize access="hasRole('USER')">
 
@@ -33,34 +26,17 @@
 
 		<%-- Form fields --%>
 
-		<form:hidden path="id" />
-		<form:hidden path="version" />
-		<form:hidden path="publisher" />
-		<form:hidden path="newspapers" />
-
-		<form:label path="title">
-			<jstl:out value="${title}" />:</form:label>
-		<form:input path="title" />
-		<form:errors cssClass="error" path="title" />
-		<br />
-		
-		<form:label path="description">
-			<jstl:out value="${description}" />:</form:label>
-		<form:input path="description" />
-		<form:errors cssClass="error" path="description" />
-		<br />
-		
-		<form:label path="year">
-			<jstl:out value="${year}" />:</form:label>
-		<form:input path="year" />
-		<form:errors cssClass="error" path="year" />
-		<br />
+		<acme:textbox path="title" code="volume.title" />
+		<br/>
+		<acme:textbox path="description" code="volume.description" />
+		<br/>
+		<acme:textbox path="year" code="volume.year" />
+		<br/>
 		
 		<%-- Buttons --%>
-		<input type="submit" name="save" value="${save}">
-
-		<input type="button" name="cancel" value="${cancel}"
-			onclick="javascript: relativeRedir('volume/list.do');" />
+		
+		<acme:submit name="save" code="volume.save" />
+		<acme:cancel code="volume.cancel" url="volume/list.do" />
 
 	</form:form>
 

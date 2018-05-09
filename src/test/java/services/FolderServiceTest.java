@@ -45,13 +45,9 @@ public class FolderServiceTest extends AbstractTest {
 
 			final Folder folder = this.folderService.create(this.actorService.findByPrincipal());
 			folder.setName(name);
+			folder.setSystem(system);
 
 			final Folder saved = this.folderService.save(folder);
-			System.out.println(saved.getName());
-			System.out.println(saved.getActor().getName());
-			System.out.println(saved.getChildren());
-			System.out.println(saved.getMailMessage());
-			System.out.println(saved.getParent());
 
 			//Listing
 
@@ -70,12 +66,12 @@ public class FolderServiceTest extends AbstractTest {
 
 			this.folderService.delete(saved2);
 			cl = this.folderService.findAll();
-			Assert.isTrue(!cl.contains(saved));
+			Assert.isTrue(!cl.contains(saved2));
 
 			this.unauthenticate();
 
 		} catch (final Throwable oops) {
-			System.out.println(oops.getMessage());
+
 			caught = oops.getClass();
 
 		}
@@ -106,7 +102,7 @@ public class FolderServiceTest extends AbstractTest {
 
 			//Test #04: Attempt to create a system folder and try to edit or delete it with blank body. Expected false.
 			{
-				"admin1", "testFolder", true, "editFolder", true, ClassCastException.class
+				"admin1", "testFolder", true, "editFolder", true, IllegalArgumentException.class
 
 			}
 		};

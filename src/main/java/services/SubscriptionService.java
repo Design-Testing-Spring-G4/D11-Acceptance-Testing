@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.SubscriptionRepository;
 import domain.Customer;
@@ -26,6 +28,9 @@ public class SubscriptionService {
 
 	@Autowired
 	private ActorService			actorService;
+
+	@Autowired
+	private Validator				validator;
 
 
 	//Simple CRUD Methods --------------------------------
@@ -89,6 +94,17 @@ public class SubscriptionService {
 	}
 
 	//Ancillary methods
+
+	public Subscription reconstruct(final Subscription subscription, final BindingResult binding) {
+		final Subscription result = this.create();
+
+		result.setVolume(subscription.getVolume());
+		result.setCreditCard(subscription.getCreditCard());
+
+		this.validator.validate(result, binding);
+
+		return result;
+	}
 
 	public Double ratioSubscriptionsVolumesNewspapers() {
 		return this.subscriptionRepository.ratioSubscriptionsVolumesNewspapers();

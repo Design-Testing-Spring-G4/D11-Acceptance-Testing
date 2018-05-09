@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.MailMessageRepository;
 import domain.Actor;
@@ -32,6 +34,9 @@ public class MailMessageService {
 	@Autowired
 	private FolderService			folderService;
 
+	@Autowired
+	private Validator				validator;
+
 
 	//Simple CRUD methods --------------------------------
 
@@ -40,10 +45,7 @@ public class MailMessageService {
 		final MailMessage mailMessage = new MailMessage();
 		mailMessage.setPriority(Priority.NEUTRAL);
 
-		final Actor receiver = this.actorService.findAll().iterator().next();
-		mailMessage.setReceiver(receiver);
 		mailMessage.setSender(this.actorService.findByPrincipal());
-		mailMessage.setFolder(this.folderService.findAll().iterator().next());
 
 		return mailMessage;
 	}
@@ -79,7 +81,21 @@ public class MailMessageService {
 		this.mailMessageRepository.delete(mailMessage);
 	}
 
-	//Other business methods ----------------------------
+	//Ancillary methods
+
+	public MailMessage reconstruct(final MailMessage mailMessage, final BindingResult binding) {
+		MailMessage result;
+
+		result = this.create();
+		result.setReceiver(mailMessage.getReceiver());
+		result.setPriority(mailMessage.getPriority());
+		result.setSubject(mailMessage.getSubject());
+		result.setBody(mailMessage.getBody());
+
+		this.validator.validate(result, binding);
+
+		return result;
+	}
 
 	//Creates a copy of a message and sends it to the receiver of the original message. Necessary to save outside this method to avoid complications.
 	public MailMessage send(final MailMessage m) {

@@ -20,15 +20,13 @@
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
 <%-- Stored message variables --%>
 
-<spring:message code="newspaper.title" var="title" />
-<spring:message code="newspaper.description" var="description" />
 <spring:message code="newspaper.publicationDate" var="publicationDate" />
 <spring:message code="newspaper.return" var="msgReturn" />
-
-
+<spring:message code="newspaper.dateInt" var="formatDate" />
 <spring:message code="article.title" var="articleTitle" />
 <spring:message code="article.writer" var="articleWriter" />
 <spring:message code="article.summary" var="articleSummary" />
@@ -39,18 +37,13 @@
 
 <security:authorize access="permitAll()">
 
-	<jstl:out value="${title}" />:&nbsp;
-	<jstl:out value="${newspaper.title}" />
-	<br />
-
-	<jstl:out value="${description}" />:&nbsp;
-	<jstl:out value="${newspaper.description}" />
-	<br />
-
-	<jstl:out value="${publicationDate}" />:&nbsp;
-	<fmt:formatDate value="${newspaper.publicationDate}"
-		pattern="${formatDate}" />
-	<br />
+	<acme:displayField code="newspaper.title" path="newspaper.title" />
+	<br/>
+	<acme:displayField code="newspaper.description" path="newspaper.description" />
+	<br/>
+	<jstl:out value="${publicationDate}" />:
+	<fmt:formatDate value="${newspaper.publicationDate}" pattern="${formatDate}" />
+	<br/>
 
 	<jstl:if test="${newspaper.picture != ''}">
 		<img src="${newspaper.picture}" height="200" width="300"/>

@@ -21,14 +21,13 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
 <%-- Stored message variables --%>
 
 <spring:message code="user.name" var="name" />
 <spring:message code="user.surname" var="surname" />
 <spring:message code="user.email" var="email" />
-<spring:message code="user.display" var="display" />
-
 
 <security:authorize access="permitAll()">
 
@@ -45,16 +44,8 @@
 	
 	<display:column property="email" title="${email}" sortable="true" />
 	
-	<spring:url var="displayUrl" value="user/display.do">
-		<spring:param name="varId" value="${row.id}" />
-	</spring:url>
-
-	<display:column>
-		<a href="${displayUrl}"><jstl:out value="${display}" /></a>
-	</display:column>
-
+	<acme:link code="user.display" url="user/display.do" id="${row.id}" />
 	
 </display:table>
-
 
 </security:authorize>

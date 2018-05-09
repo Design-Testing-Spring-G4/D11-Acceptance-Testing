@@ -3,8 +3,6 @@ package controllers;
 
 import java.util.Collection;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -16,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import services.ActorService;
 import services.UserService;
 import domain.User;
+import forms.ActorRegisterForm;
 
 @Controller
 @RequestMapping("user")
@@ -35,10 +34,10 @@ public class UserController extends AbstractController {
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create() {
 		final ModelAndView result;
-		User user;
+		ActorRegisterForm arf;
 
-		user = this.userService.create();
-		result = this.createEditModelAndView(user);
+		arf = new ActorRegisterForm();
+		result = this.createEditModelAndView(arf);
 
 		return result;
 	}
@@ -75,37 +74,39 @@ public class UserController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(@Valid final User user, final BindingResult binding) {
+	public ModelAndView save(final ActorRegisterForm arf, final BindingResult binding) {
 		ModelAndView result;
+		final User user = this.userService.reconstruct(arf, binding);
 
-		if (binding.hasErrors())
-			result = this.createEditModelAndView(user);
-		else
+		if (binding.hasErrors()) {
+			arf.setAcceptedTerms(false);
+			result = this.createEditModelAndView(arf);
+		} else
 			try {
 				this.actorService.hashPassword(user);
 				this.userService.save(user);
 				result = new ModelAndView("redirect:/welcome/index.do");
 			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(user, "user.commit.error");
+				result = this.createEditModelAndView(arf);
 			}
 		return result;
 	}
 
 	//Ancillary methods
 
-	protected ModelAndView createEditModelAndView(final User user) {
+	protected ModelAndView createEditModelAndView(final ActorRegisterForm arf) {
 		ModelAndView result;
 
-		result = this.createEditModelAndView(user, null);
+		result = this.createEditModelAndView(arf, null);
 
 		return result;
 	}
 
-	protected ModelAndView createEditModelAndView(final User user, final String messageCode) {
+	protected ModelAndView createEditModelAndView(final ActorRegisterForm arf, final String messageCode) {
 		ModelAndView result;
 
 		result = new ModelAndView("user/create");
-		result.addObject("user", user);
+		result.addObject("arf", arf);
 		result.addObject("message", messageCode);
 		result.addObject("requestURI", "user/create.do");
 

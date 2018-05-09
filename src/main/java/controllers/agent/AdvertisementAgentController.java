@@ -3,10 +3,9 @@ package controllers.agent;
 
 import java.util.Collection;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -45,8 +44,10 @@ public class AdvertisementAgentController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(@Valid final Advertisement advertisement, final BindingResult binding) {
+	public ModelAndView save(final Advertisement a, final BindingResult binding) {
 		ModelAndView result;
+		Assert.notNull(a);
+		final Advertisement advertisement = this.advertisementService.reconstruct(a, binding);
 
 		if (binding.hasErrors())
 			result = this.createEditModelAndView(advertisement);

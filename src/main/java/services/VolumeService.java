@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.VolumeRepository;
 import domain.Newspaper;
@@ -27,6 +29,9 @@ public class VolumeService {
 
 	@Autowired
 	private ActorService		actorService;
+
+	@Autowired
+	private Validator			validator;
 
 
 	//Simple CRUD Methods --------------------------------
@@ -72,6 +77,18 @@ public class VolumeService {
 	}
 
 	//Other methods
+
+	public Volume reconstruct(final Volume volume, final BindingResult binding) {
+		final Volume result = this.create();
+
+		result.setDescription(volume.getDescription());
+		result.setTitle(volume.getTitle());
+		result.setYear(volume.getYear());
+
+		this.validator.validate(result, binding);
+
+		return result;
+	}
 
 	public Double avgNewspapersPerVolume() {
 		return this.volumeRepository.avgNewspapersPerVolume();

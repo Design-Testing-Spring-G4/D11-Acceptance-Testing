@@ -24,6 +24,8 @@ public class ArticleService {
 	@Autowired
 	private ArticleRepository	articleRepository;
 
+	//Supporting services
+
 	@Autowired
 	private NewspaperService	newspaperService;
 
@@ -35,16 +37,16 @@ public class ArticleService {
 
 	public Article create(final int varId) {
 		final Article article = new Article();
+		final User user = (User) this.actorService.findByPrincipal();
 		final Newspaper newspaper = this.newspaperService.findOne(varId);
-		Assert.notNull(newspaper);
-		article.setWriter(((User) this.actorService.findByPrincipal()));
-		article.setFinalMode(false);
+
+		article.setMoment(newspaper.getPublicationDate());
+		article.setWriter(user);
 		article.setFollowups(new ArrayList<Followup>());
 		article.setPictures(new ArrayList<String>());
-		article.setMoment(newspaper.getPublicationDate());
+
 		return article;
 	}
-
 	public Collection<Article> findAll() {
 		return this.articleRepository.findAll();
 	}
